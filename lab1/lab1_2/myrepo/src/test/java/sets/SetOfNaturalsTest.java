@@ -71,6 +71,9 @@ public class SetOfNaturalsTest {
         assertThrows(IllegalArgumentException.class, () -> {
             setD.add(10);
         });
+        assertDoesNotThrow(() -> {
+            setD.add(17);
+        });
     }
 
 
