@@ -74,9 +74,7 @@ public class TqsStackTest {
     @Test
     @DisplayName("Popping from an empty stack does throw a NoSuchElementException [You should test for the Exception occurrence")
     void noElementPop() {
-        Exception exception = assertThrows(NoSuchElementException.class, () -> {
-            stack.pop();
-        });
+        Exception exception = assertThrows(NoSuchElementException.class, stack::pop);
 
         assertTrue(exception instanceof NoSuchElementException);
 
@@ -85,9 +83,7 @@ public class TqsStackTest {
     @Test
     @DisplayName("Peeking into an empty stack does throw a NoSuchElementExceptioni)For bounded stacks only:pushing onto a full stack does throw an IllegalStateException")
     void noElementPeek() {
-        Exception exception = assertThrows(NoSuchElementException.class, () -> {
-            stack.peek();
-        });
+        Exception exception = assertThrows(NoSuchElementException.class, stack::peek);
 
         assertTrue(exception instanceof NoSuchElementException);
     }
