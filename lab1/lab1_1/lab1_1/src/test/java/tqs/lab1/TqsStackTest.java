@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.NoSuchElementException;
 
+import java.lang.IllegalStateException;
+
 import org.junit.jupiter.api.BeforeEach;
 // import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +19,7 @@ public class TqsStackTest {
     TqsStack<String> stack;
 
     @BeforeEach
-    void start() {
+    void init() {
         stack = new TqsStack<String>();
     }
     
@@ -88,8 +90,19 @@ public class TqsStackTest {
         assertTrue(exception instanceof NoSuchElementException);
     }
 
+    @Test
+    @DisplayName("For bounded stacks only:pushing onto a full stack does throw an IllegalStateException")
+    void illegalState() {
+        Exception exc = assertThrows(IllegalStateException.class, () -> {
+            stack = new TqsStack<String>(1);
+            stack.push("Amongus");
+            stack.push("Ricardo");
+        });
+
+        assertTrue(exc instanceof IllegalStateException);
+    }
 
 
     // h)
-    
+    // 
 }

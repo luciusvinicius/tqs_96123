@@ -5,6 +5,15 @@ import java.util.NoSuchElementException;
 
 public class TqsStack<T> {
     private ArrayList<T> elements = new ArrayList<T>();
+    private int limit = -1;
+
+    public TqsStack() {
+
+    }
+
+    public TqsStack(int l) {
+        limit = l;
+    }
 
     public int size() {
         return elements.size();
@@ -15,7 +24,10 @@ public class TqsStack<T> {
     }
 
     public void push(T elem) {
-        elements.add(elem);
+        if (limit < 0 || this.size() < limit)
+            elements.add(elem);
+        else
+            throw new IllegalStateException();
     }
 
     public T pop() {
