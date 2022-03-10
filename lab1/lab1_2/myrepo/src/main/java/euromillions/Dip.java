@@ -13,8 +13,8 @@ import java.util.Random;
  */
 public class Dip {
 
-    private static final int STARS_RANGE = 11;
-    private static final int NUMBERS_RANGE = 49;
+    private static final int STARS_RANGE = 12;
+    private static final int NUMBERS_RANGE = 50;
     private static final int NUMBER_OF_STARS = 2;
     private static final int NUMBER_OF_NUMBERS = 5;
 
@@ -38,6 +38,18 @@ public class Dip {
             throw new IllegalArgumentException("wrong number of elements in numbers/stars");
         }
 
+        for (int i: arrayOfStarts) {
+            if (i < 1 || i > STARS_RANGE) {
+                throw new IllegalArgumentException("wrong star value!");
+            }
+        }
+
+        for (int i: arrayOfNumbers) {
+            if (i < 1 || i > NUMBERS_RANGE) {
+                throw new IllegalArgumentException("wrong number value!");
+            }
+        }
+
     }
 
     public SetOfNaturals getNumbersColl() {
@@ -53,14 +65,14 @@ public class Dip {
 
         Dip randomDip = new Dip();
         for (int i = 0; i < NUMBER_OF_NUMBERS; ) {
-            int candidate = generator.nextInt(NUMBERS_RANGE) + 1;
+            int candidate = generator.nextInt(NUMBERS_RANGE - 1) + 1;
             if (!randomDip.getNumbersColl().contains(candidate)) {
                 randomDip.getNumbersColl().add(candidate);
                 i++;
             }
         }
         for (int i = 0; i < NUMBER_OF_STARS; ) {
-            int candidate = generator.nextInt(STARS_RANGE) + 1;
+            int candidate = generator.nextInt(STARS_RANGE - 1) + 1;
             if (!randomDip.getStarsColl().contains(candidate)) {
                 randomDip.getStarsColl().add(candidate);
                 i++;

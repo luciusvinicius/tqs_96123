@@ -13,7 +13,10 @@ import org.junit.jupiter.api.*;
  */
 public class DipTest {
 
-    static final double NUMBER_OF_STARS = 2;
+    private static final int STARS_RANGE = 12;
+    private static final int NUMBERS_RANGE = 50;
+    private static final int NUMBER_OF_STARS = 2;
+    private static final int NUMBER_OF_NUMBERS = 5;
 
     private Dip instance;
 
@@ -44,6 +47,14 @@ public class DipTest {
         // note: correct the implementation of the format(), not the test...
         String result = instance.format();
         assertEquals("N[ 10 20 30 40 50] S[  1  2]", result, "format as string: formatted string not as expected. ");
+    }
+
+    @Test
+    public void testNewStars() {
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Dip(new int[]{10, 20, 30, 40, 50}, new int[]{1, STARS_RANGE + 1});
+        });
     }
 
 }

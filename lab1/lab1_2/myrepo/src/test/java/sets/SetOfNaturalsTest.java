@@ -61,5 +61,17 @@ public class SetOfNaturalsTest {
 
     }
 
+    @Test
+    public void testIntersectForIntersection() {
+        assertTrue(setB.intersects(setD));
+    }
+
+    @Test
+    public void testDuplicateElements() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            setD.add(10);
+        });
+    }
+
 
 }
