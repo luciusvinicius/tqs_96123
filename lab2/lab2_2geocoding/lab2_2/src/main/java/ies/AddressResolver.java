@@ -33,9 +33,6 @@ public class AddressResolver {
     public Optional<Address> findAddressForLocation(double latitude, double longitude) throws URISyntaxException, IOException, ParseException, org.json.simple.parser.ParseException {
 
 
-        if (latitude != 40.6318)
-        System.out.println("start of function");
-
         String apiKey = "uXSAVwYWbf9tJmsjEGHKKAo0gOjZfBLQ";
 
 
@@ -56,14 +53,9 @@ public class AddressResolver {
         obj = (JSONObject) ((JSONArray) obj.get("results")).get(0);
         JSONArray locations = (JSONArray) obj.get("locations");
 
-        if (latitude != 40.6318)
-        System.out.println("locations: " + locations);
         if (locations.isEmpty()) {
             return Optional.empty();
         }
-
-        if (latitude != 40.6318)
-        System.out.println("after if");
 
         JSONObject address = (JSONObject) locations.get(0);
 
