@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ies.AddressResolverTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.368 s <<< FAILURE! - in ies.AddressResolverTest
-testFindAddressForLocation  Time elapsed: 0.349 s  <<< ERROR!
-java.lang.RuntimeException: Unable to find config.properties
-	at ies.AddressResolverTest.testFindAddressForLocation(AddressResolverTest.java:40)
-
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.366 s - in ies.AddressResolverTest

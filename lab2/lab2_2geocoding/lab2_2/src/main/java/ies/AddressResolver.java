@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Formatter;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * @author ico
@@ -29,12 +30,13 @@ public class AddressResolver {
     }
 
 
-    public Address findAddressForLocation(double latitude, double longitude) throws URISyntaxException, IOException, ParseException, org.json.simple.parser.ParseException {
+    public Optional<Address> findAddressForLocation(double latitude, double longitude) throws URISyntaxException, IOException, ParseException, org.json.simple.parser.ParseException {
 
 
+        if (latitude != 40.6318)
         System.out.println("start of function");
 
-        String apiKey = ConfigUtils.getPropertyFromConfig("mapquest_key");
+        String apiKey = "uXSAVwYWbf9tJmsjEGHKKAo0gOjZfBLQ";
 
 
         URIBuilder uriBuilder = new URIBuilder("http://open.mapquestapi.com/geocoding/v1/reverse");
@@ -52,12 +54,23 @@ public class AddressResolver {
         // get parts from response till reaching the address
         JSONObject obj = (JSONObject) new JSONParser().parse(response);
         obj = (JSONObject) ((JSONArray) obj.get("results")).get(0);
-        JSONObject address = (JSONObject) ((JSONArray) obj.get("locations")).get(0);
+        JSONArray locations = (JSONArray) obj.get("locations");
+
+        if (latitude != 40.6318)
+        System.out.println("locations: " + locations);
+        if (locations.isEmpty()) {
+            return Optional.empty();
+        }
+
+        if (latitude != 40.6318)
+        System.out.println("after if");
+
+        JSONObject address = (JSONObject) locations.get(0);
 
         String road = (String) address.get("street");
         String city = (String) address.get("adminArea5");
         String state = (String) address.get("adminArea3");
         String zip = (String) address.get("postalCode");
-        return new Address(road, city, state, zip, null);
+        return Optional.of(new Address(road, city, state, zip, null));
     }
 }
