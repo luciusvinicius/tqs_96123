@@ -11,7 +11,7 @@ public class CarManagerService {
     private CarRepository carRepository;
 
     public Car save(Car car) {
-        return car;
+        return carRepository.save(car);
     }
 
     public List<Car> getAllCars() {
@@ -19,6 +19,8 @@ public class CarManagerService {
     }
 
     public Optional<Car> getCarDetails(long id) {
-        return null;
+        Car car = carRepository.findByCarId(id);
+
+        return Optional.of(car);
     }
 }
