@@ -1,11 +1,6 @@
 package ies.lab3.lab3_2.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "cars")
@@ -14,7 +9,7 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long carId;
+    private long carId;
 
     @Column(name = "maker")
     private String maker;

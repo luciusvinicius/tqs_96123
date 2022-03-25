@@ -24,11 +24,10 @@ public class CarController {
 
     @GetMapping("/car/{id}")
     public Optional<Car> getCar(@PathVariable(value="id") Long carId) {
-        System.out.println("super sussy bros");
         return service.getCarDetails(carId);
     }
 
-    @GetMapping("/car")
+    @GetMapping("/cars")
     public List<Car> getCars() {
         return service.getAllCars();
     }
