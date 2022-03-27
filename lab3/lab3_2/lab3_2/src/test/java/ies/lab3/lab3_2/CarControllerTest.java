@@ -45,6 +45,7 @@ public class CarControllerTest {
     @Test
     public void whenPostCar_thenCreateCar() throws IOException, Exception {
         Car car = new Car("Sansung", "XPTO");
+        car.setCarId(1l);
 
         when(service.save(Mockito.any())).thenReturn(car);
 
@@ -61,11 +62,12 @@ public class CarControllerTest {
     @Test
     public void getCarById_Success() throws Exception {
         Car car = new Car("Sansung", "XPTO");
+        car.setCarId(1l);
 
         when(service.getCarDetails(car.getCarId())).thenReturn(Optional.of(car));
 
         mvc.perform(
-            get("/car/0")
+            get("/car/1")
         )
 
         .andExpect(status().isOk())
@@ -74,21 +76,6 @@ public class CarControllerTest {
 
         verify(service, times(1)).getCarDetails(car.getCarId());
     }
-
-    // @Test
-    // public void getCarById_Failed() throws Exception {
-    //     // Car car = new Car("Sansung", "XPTO");
-
-    //     when(service.getCarDetails(1l)).thenReturn(Optional.empty());
-
-    //     mvc.perform(
-    //         get("/car/1")
-    //     )
-
-    //     .andExpect(jsonPath("$.maker", is("Sansung")));
-
-    //     verify(service, times(1)).getCarDetails(1l);
-    // }
 
     @Test
     public void getAllCars_Success() throws Exception {

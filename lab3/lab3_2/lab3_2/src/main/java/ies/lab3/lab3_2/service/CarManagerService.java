@@ -15,12 +15,12 @@ public class CarManagerService {
     }
 
     public List<Car> getAllCars() {
-        return null;
+        return carRepository.findAll();
     }
 
     public Optional<Car> getCarDetails(long id) {
         Car car = carRepository.findByCarId(id);
 
-        return Optional.of(car);
+        return car != null ? Optional.of(car) : Optional.empty();
     }
 }
