@@ -16,6 +16,10 @@ public class Car {
     @Column(name = "model")
     private String model;
 
+    public Car() {
+        
+    }
+
     public Car(String maker, String model) {
         this.maker = maker;
         this.model = model;

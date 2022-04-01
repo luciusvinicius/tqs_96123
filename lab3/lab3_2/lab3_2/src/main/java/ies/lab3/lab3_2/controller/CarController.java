@@ -33,7 +33,7 @@ public class CarController {
     }
 
     @PostMapping("/car" )
-    public ResponseEntity<Car> createEmployee(@RequestBody Car car) {
+    public ResponseEntity<Car> createCar(@RequestBody Car car) {
         HttpStatus status = HttpStatus.CREATED;
         Car saved = service.save(car);
         return new ResponseEntity<>(saved, status);
