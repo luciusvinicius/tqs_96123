@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ies.lab4.SeleniumIDETest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 16.001 s - in ies.lab4.SeleniumIDETest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.18 s - in ies.lab4.SeleniumIDETest
