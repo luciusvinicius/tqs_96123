@@ -1,5 +1,8 @@
 package ies.lab4;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,28 +21,27 @@ public class HomePage {
     @FindBy(name = "toPort")
     private WebElement destination;
 
-    @FindBy(how = How.LINK_TEXT, using = "Find Flights")
-    private WebElement findButton;
+    @FindBy(how = How.CSS, using = "input[class='btn btn-primary']")
+    private List<WebElement> findButton;
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public WebElement getFindButton() {
-        return this.findButton;
+    public void chooseOrigin(String origin) {
+        departure.findElement(By.xpath("//option[. = '" + origin + "']")).click();
     }
 
-    public WebElement getDeparture() {
-        return this.departure;
-    }
-
-    public WebElement getDestination() {
-        return this.destination;
+    public void chooseDestination(String destination) {
+        this.destination.findElement(By.xpath("//option[. = '" + destination + "']")).click();
     }
 
     public void clickOnFindFlightsButton() {
-        findButton.click();
+        for (WebElement btn : findButton) {
+            btn.click();
+        }
+        // findButton.click();
     }
 
 }
