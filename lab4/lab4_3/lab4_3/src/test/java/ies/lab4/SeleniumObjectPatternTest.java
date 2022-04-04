@@ -58,7 +58,7 @@ public class SeleniumObjectPatternTest {
     purchasePage.setNameOnCard("Sussy Boy");
     purchasePage.rememberMeCheck();
     purchasePage.purchaseButtonClick();
-
+ 
     ConfirmationPage confirmationPage = new ConfirmationPage(driver);
     assertTrue(confirmationPage.isOpened());
 
