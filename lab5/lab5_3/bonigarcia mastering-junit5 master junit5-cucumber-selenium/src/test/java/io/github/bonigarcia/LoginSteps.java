@@ -32,7 +32,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// @ExtendWith(SeleniumJupiter.class)
 public class LoginSteps {
 
     private WebDriver driver;
@@ -68,6 +67,49 @@ public class LoginSteps {
     public void iReserveShouldBeOpened() {
         reservePage = new ReservePage(driver);
         assertTrue(reservePage.isOpened());
+    }
+
+    @And("I click on the flight button number {int}")
+    public void iClickFlightButton(Integer idx) {
+        reservePage.clickOnFlight(idx);
+        purchasePage = new PurchasePage(driver);
+    }
+
+    @Then("Purchase Page should be opened")
+    public void iPurchaseShouldBeOpened() {
+        assertTrue(purchasePage.isOpened());
+    }
+
+    @And("I insert {string} as my name, {string} as my address, {string} as my city, {string} as my state, {int} as my zip code, {string} as my card type, {int} as my credit card number, {int} as month, {int} as year, {string} as my name on card")
+    public void iFillForm(String name, String address, String city, String state, Integer zip, 
+    String cardType, Integer cardNumber, Integer month, Integer year, String cardName) {
+
+        purchasePage.setName(name);
+        purchasePage.setAddress(address);
+        purchasePage.setCity(city);
+        purchasePage.setState(state);
+        purchasePage.setZipCode(zip + "");
+        purchasePage.setCardType(cardType); // TODO
+        purchasePage.setCreditCardNumber(cardNumber + "");
+        purchasePage.setCreditCardMonth(month + "");
+        purchasePage.setCreditCardYear(year + "");
+        purchasePage.setNameOnCard(cardName);
+    }
+
+    @And("I click on remember me checkbox")
+    public void iRememberMeCheckbox() {
+        purchasePage.rememberMeCheck();
+    }
+
+    @And("I click on Purchase Flight")
+    public void iClickPurchaseFlight() {
+        purchasePage.purchaseButtonClick();
+        confirmationPage = new ConfirmationPage(driver);
+    }
+
+    @Then("Confirmation Page should be opened")
+    public void iConfimationShouldBeOpened() {
+        assertTrue(confirmationPage.isOpened());
     }
 
     // @When("I navigate to {string}")

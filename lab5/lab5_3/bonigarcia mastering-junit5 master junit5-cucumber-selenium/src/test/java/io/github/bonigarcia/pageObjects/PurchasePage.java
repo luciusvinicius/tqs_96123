@@ -89,6 +89,11 @@ public class PurchasePage {
         select.selectByIndex(index);
     }
 
+    public void setCardType(String name) {
+        Select select = new Select(cardType);
+        select.selectByVisibleText(name);
+    }
+
     public void setCreditCardNumber(String creditCardNumber) {
         this.creditCardNumber.clear();
         this.creditCardNumber.sendKeys(creditCardNumber);

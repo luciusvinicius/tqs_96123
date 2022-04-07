@@ -14,9 +14,16 @@
 
 Feature: Made a purchase
 
-  Scenario: Verify reserves
+  Scenario: Make a purchase
   When I start a reserve
   And I choose "Philadelphia" as my departure
   And I choose "Berlin" as my destination
   And I click Find Flights
   Then Reserve Page should be opened
+  And I click on the flight button number 3
+  Then Purchase Page should be opened
+  And I insert "Lucius Vinicius" as my name, "Rua Sao Sebastiao" as my address, "Aveiro" as my city, "Aveiro" as my state, 12321 as my zip code, "American Express" as my card type, 123321 as my credit card number, 12 as month, 2021 as year, "Lucius Vinicius" as my name on card
+  And I click on remember me checkbox
+  And I click on Purchase Flight
+  Then Confirmation Page should be opened
+
