@@ -17,19 +17,4 @@ import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "io.cucumber.skeleton")
 public class RunCucumberTest {
-
-    @When("I wait {int} hour")
-    public void i_wait_hour(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        Belly belly = new Belly();
-        belly.wait(int1);
-    }
-
-    @Then("my belly should growl")
-    public void my_belly_should_growl() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new io.cucumber.java.PendingException();
-        Belly belly = new Belly();
-        belly.grow();
-    }
 }
