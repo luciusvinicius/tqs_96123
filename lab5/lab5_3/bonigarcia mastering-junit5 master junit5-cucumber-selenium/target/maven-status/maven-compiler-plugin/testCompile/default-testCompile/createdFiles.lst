@@ -1,0 +1,6 @@
+io/github/bonigarcia/pageObjects/HomePage.class
+io/github/bonigarcia/pageObjects/ReservePage.class
+io/github/bonigarcia/pageObjects/PurchasePage.class
+io/github/bonigarcia/pageObjects/ConfirmationPage.class
+io/github/bonigarcia/LoginSteps.class
+io/github/bonigarcia/CucumberTest.class
