@@ -13,6 +13,10 @@ public class CovidService {
         return null;
     }
 
+    public List<Country> getAllCountriesByContinent(String continent) {
+        return null;
+    }
+
     public Country getCountryByName(String name) {
         return null;
     }

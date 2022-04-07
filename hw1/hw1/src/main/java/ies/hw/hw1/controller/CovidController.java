@@ -18,7 +18,11 @@ public class CovidController {
     private CovidService service;
 
     @GetMapping("/countries")
-    public List<Country> getAllCountries() {
+    public List<Country> getAllCountries(@RequestParam(required = false) String continent) {
+        if (continent != null) {
+            System.out.println("Getting all countries for continent: " + continent);
+            return service.getAllCountries();
+        }
         System.out.println("Getting all countries");
         return service.getAllCountries();
     }
@@ -28,6 +32,8 @@ public class CovidController {
         System.out.println("Getting Country by name: " + name);
         return service.getCountryByName(name);
     }
+
+
 
 
 }
