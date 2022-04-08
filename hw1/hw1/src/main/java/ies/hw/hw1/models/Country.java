@@ -8,8 +8,8 @@ public class Country {
     private String continent;
     private String country; 
     private long population;
-    private String day;
-    private String time;
+    private Date day;
+    private LocalDateTime time;
 
     // private int newDeaths;
     // private int totalDeaths;
@@ -20,17 +20,8 @@ public class Country {
     // private int recoveredCases;
     // private int totalCases;
 
-    public Country() {
-        
-    }
 
-    @Override
-    public String toString() {
-        return "Country [continent=" + continent + ", country=" + country + ", day=" + day + ", population="
-                + population + ", time=" + time + "]";
-    }
-
-    public Country(String continent, String country, long population, String day, String time) {
+    public Country(String continent, String country, long population, Date day, LocalDateTime time) {
         this.continent = continent;
         this.country = country;
         this.population = population;
@@ -69,22 +60,22 @@ public class Country {
     }
 
 
-    public String getDay() {
+    public Date getDay() {
         return day;
     }
 
 
-    public void setDay(String day) {
+    public void setDay(Date day) {
         this.day = day;
     }
 
 
-    public String getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
 
-    public void setTime(String time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 

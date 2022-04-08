@@ -2,25 +2,15 @@ package ies.hw.hw1.http;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
 
 import com.google.gson.Gson;
 
 import org.json.simple.JSONObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
-
-
-import ies.hw.hw1.models.Country;
 
 public class BasicHttpClient {
     
@@ -62,7 +52,7 @@ public class BasicHttpClient {
         .method("GET", HttpRequest.BodyPublishers.noBody())
         .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+        // System.out.println(response.body());
         return new ResponseEntity<>(response.body(), HttpStatus.valueOf(response.statusCode()));
     }
 
@@ -76,7 +66,7 @@ public class BasicHttpClient {
         .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.body());
-        Gson gson = new Gson();
+        // Gson gson = new Gson();
 
 
         // RestTemplate restTemplate = new RestTemplate();

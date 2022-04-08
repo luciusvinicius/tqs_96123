@@ -1,0 +1,14 @@
+.App {
+  /* background-color: #282c34;
+  color: white; */
+  min-height: 100vh;
+}
+
+.textInput {
+  margin: 2em;
+}
+
+.customContainer {
+  width: 95%;
+  margin-left: 2.5%;
+}
