@@ -17,11 +17,16 @@ public class CovidService {
         return BasicHttpClient.getAllCountries();
     }
 
-    public List<Country> getAllCountriesByContinent(String continent) {
-        return null;
+    public ResponseEntity<String> getStatsByContinent(String continent) {
+        return BasicHttpClient.getCountryByRegion(continent);
     }
 
-    public Country getCountryByName(String name) {
-        return null;
+    public ResponseEntity<String> getStatsByCountry(String name) {
+        return BasicHttpClient.getCountryByRegion(name);
+    }
+
+    public ResponseEntity<String> getAllContinents() {
+        ResponseEntity<String> response = BasicHttpClient.getAllCountries();
+        return response;
     }
 }

@@ -6,9 +6,21 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 
+import com.google.gson.Gson;
+
+import org.json.simple.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+
+import ies.hw.hw1.models.Country;
 
 public class BasicHttpClient {
     
@@ -21,23 +33,64 @@ public class BasicHttpClient {
 
     public static ResponseEntity<String> getAllCountries() {
         try {
-            HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(COUNTRIES_URL))
-            .header("X-RapidAPI-Host", HEADER_HOST)
-            .header("X-RapidAPI-Key", HEADER_KEY)
-            .method("GET", HttpRequest.BodyPublishers.noBody())
-            .build();
-
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
-            return new ResponseEntity<>(response.body(), HttpStatus.valueOf(response.statusCode()));
+            return doRequest(COUNTRIES_URL);
         }
         catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
         }
-        
+    }
 
+    public static ResponseEntity<String> getCountryByRegion(String country) {
+        try {
+
+            return doRequest(STATISTICS_URL + "?country=" + country);
+        }
+        catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static ResponseEntity<String> doRequest(String uri) throws IOException, InterruptedException {
+
+        HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(uri))
+        .header("X-RapidAPI-Host", HEADER_HOST)
+        .header("X-RapidAPI-Key", HEADER_KEY)
+        .header("Content-Type", "application/json")
+        .method("GET", HttpRequest.BodyPublishers.noBody())
+        .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        return new ResponseEntity<>(response.body(), HttpStatus.valueOf(response.statusCode()));
+    }
+
+    private static ResponseEntity<JSONObject> doStatsRequest(String uri) throws IOException, InterruptedException {
+
+        HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(uri))
+        .header("X-RapidAPI-Host", HEADER_HOST)
+        .header("X-RapidAPI-Key", HEADER_KEY)
+        .method("GET", HttpRequest.BodyPublishers.noBody())
+        .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+        Gson gson = new Gson();
+
+
+        // RestTemplate restTemplate = new RestTemplate();
+
+        // HttpHeaders headers = new HttpHeaders();
+        // headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        // headers.setContentType(MediaType.APPLICATION_JSON);
+        // headers.add("X-RapidAPI-Host", HEADER_HOST);
+        // headers.add("X-RapidAPI-Key", HEADER_KEY);
+        // HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);       
+        // ResponseEntity<Country> result = restTemplate.exchange(uri, HttpMethod.GET, entity, Country.class);       
+        // System.out.println(result.getBody());
+
+        return null;
     }
     
 }

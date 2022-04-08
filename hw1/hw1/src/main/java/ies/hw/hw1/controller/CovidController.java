@@ -31,11 +31,18 @@ public class CovidController {
     }
 
     @GetMapping("/countries/{name}")
-    public Country getCountryByName(@PathVariable(value = "name") String name) {
+    public ResponseEntity<String> getCountryByName(@PathVariable(value = "name") String name) {
         System.out.println("Getting Country by name: " + name);
-        return service.getCountryByName(name);
+        return service.getStatsByCountry(name);
     }
 
+    // TODO: GetMapping to continents?????
+
+    @GetMapping("/continents/{name}")
+    public ResponseEntity<String> getContinents(@PathVariable(value = "name") String name) {
+        System.out.println("Getting Continent by name: " + name);
+        return service.getStatsByContinent(name);
+    }
 
 
 
