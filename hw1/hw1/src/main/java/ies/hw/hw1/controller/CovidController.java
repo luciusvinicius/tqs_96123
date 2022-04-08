@@ -1,8 +1,11 @@
 package ies.hw.hw1.controller;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +21,7 @@ public class CovidController {
     private CovidService service;
 
     @GetMapping("/countries")
-    public List<Country> getAllCountries(@RequestParam(required = false) String continent) {
+    public ResponseEntity<String> getAllCountries(@RequestParam(required = false) String continent) {
         if (continent != null) {
             System.out.println("Getting all countries for continent: " + continent);
             return service.getAllCountries();
