@@ -2,6 +2,7 @@ package ies.hw.hw1.service;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;

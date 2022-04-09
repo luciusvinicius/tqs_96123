@@ -28,7 +28,7 @@ public class CovidController {
 
         if (day != null) {
             // TODO
-            System.out.println("Getting all countries for day: " + day);
+            System.out.println("Getting Country for day: " + day);
             return service.getStatsByCountryAndDate(name, day);
         }
 

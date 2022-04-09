@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
 
@@ -21,6 +22,8 @@ public class BasicHttpClient {
     private static final String HEADER_HOST = "covid-193.p.rapidapi.com";
     private static final String HEADER_KEY = "3a17131f7emsh4ac69d9c09df18cp1d85e9jsn01ab2bb0f00b";
 
+    private static HashMap<String, ResponseEntity<String>> cache = new HashMap<>();
+
     public static ResponseEntity<String> getAllCountries() {
         try {
             return doRequest(COUNTRIES_URL);
@@ -34,7 +37,7 @@ public class BasicHttpClient {
     public static ResponseEntity<String> getCountryByRegion(String country) {
         try {
 
-            return doRequest(STATISTICS_URL + "?country=" + country);
+            return doRequest(HISTORY_URL + "?country=" + country);
         }
         catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -44,7 +47,7 @@ public class BasicHttpClient {
 
     public static ResponseEntity<String> getCountryByRegionAndDate(String country, String date) {
         try {
-
+            
             return doRequest(HISTORY_URL + "?country=" + country + "&day=" + date);
         }
         catch (IOException | InterruptedException e) {
@@ -55,6 +58,12 @@ public class BasicHttpClient {
 
     private static ResponseEntity<String> doRequest(String uri) throws IOException, InterruptedException {
 
+        // Verify if response entity is present on cache
+        if (cache.containsKey(uri)) {
+            System.out.println("Cache used for url: " + uri);
+            return cache.get(uri);
+        }
+
         HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(uri))
         .header("X-RapidAPI-Host", HEADER_HOST)
@@ -63,8 +72,11 @@ public class BasicHttpClient {
         .method("GET", HttpRequest.BodyPublishers.noBody())
         .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        // System.out.println(response.body());
-        return new ResponseEntity<>(response.body(), HttpStatus.valueOf(response.statusCode()));
+        ResponseEntity<String> resp = new ResponseEntity<>(response.body(), HttpStatus.valueOf(response.statusCode()));
+
+        cache.put(uri, resp); // Insert response entity on cache
+
+        return resp;
     }
     
 }
