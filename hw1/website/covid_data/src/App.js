@@ -1,14 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DataShown from './DataShown';
 
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const testOptions = ["Among", "us"]
 
 const apiURL = "http://localhost:8080"
-
 
 function App() {
 
@@ -16,6 +16,7 @@ function App() {
   const [countryName, setCountryName] = useState("")
   const [data, setData] = useState({})
   const [isFullLoaded, setIsFullLoaded] = useState(false)
+  const [dateVal, setDateVal] = useState(new Date())
 
   const createRequest = (uri, setFunc, changeLoad=false) => {
     fetch(uri, {
@@ -40,17 +41,19 @@ function App() {
     })
   }
 
-
   useEffect(() => {
     createRequest(`${apiURL}/countries`, setCountries, true)
   }, [])
 
   useEffect(() => {
+    // console.log("date", dateVal.toISOString().substring(0, 10))
     if (countryName == "") return
     setData({isLoading: true})
-    createRequest(`${apiURL}/countries/${countryName}`, setData)
+    createRequest(`${apiURL}/countries/${countryName}?day=${dateVal.toISOString().substring(0, 10)}`, setData)
 
-  }, [countryName])
+  }, [countryName, dateVal])
+
+
 
   return (
     <div className="App">
@@ -64,11 +67,27 @@ function App() {
         </div>
       :
       <div className='customContainer'>
+
         <Autocomplete
           options={countries}
           onChange={(_, val) => setCountryName(val)}
           renderInput={(params) => <TextField {...params} label="Country"/>}
         />
+
+        <br />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label="Date"
+            inputFormat='dd/MM/yyyy'
+            value={dateVal}
+            onChange={(newValue) => {
+              setDateVal(newValue)
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        
+
         {Object.keys(data).length !== 0 && <DataShown totalData={data}/>}
       </div>
       }

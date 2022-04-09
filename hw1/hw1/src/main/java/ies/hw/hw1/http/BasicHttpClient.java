@@ -42,6 +42,17 @@ public class BasicHttpClient {
         }
     }
 
+    public static ResponseEntity<String> getCountryByRegionAndDate(String country, String date) {
+        try {
+
+            return doRequest(HISTORY_URL + "?country=" + country + "&day=" + date);
+        }
+        catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static ResponseEntity<String> doRequest(String uri) throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -54,33 +65,6 @@ public class BasicHttpClient {
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         // System.out.println(response.body());
         return new ResponseEntity<>(response.body(), HttpStatus.valueOf(response.statusCode()));
-    }
-
-    private static ResponseEntity<JSONObject> doStatsRequest(String uri) throws IOException, InterruptedException {
-
-        HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(uri))
-        .header("X-RapidAPI-Host", HEADER_HOST)
-        .header("X-RapidAPI-Key", HEADER_KEY)
-        .method("GET", HttpRequest.BodyPublishers.noBody())
-        .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-        // Gson gson = new Gson();
-
-
-        // RestTemplate restTemplate = new RestTemplate();
-
-        // HttpHeaders headers = new HttpHeaders();
-        // headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        // headers.setContentType(MediaType.APPLICATION_JSON);
-        // headers.add("X-RapidAPI-Host", HEADER_HOST);
-        // headers.add("X-RapidAPI-Key", HEADER_KEY);
-        // HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);       
-        // ResponseEntity<Country> result = restTemplate.exchange(uri, HttpMethod.GET, entity, Country.class);       
-        // System.out.println(result.getBody());
-
-        return null;
     }
     
 }

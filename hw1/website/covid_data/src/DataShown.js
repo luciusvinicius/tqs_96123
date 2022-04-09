@@ -4,7 +4,7 @@ import { Col, Row } from "react-bootstrap";
 
 const DataShown = ({totalData}) => {
     
-    const data = totalData[0]
+    const data = totalData[totalData.length - 1]
     console.log("totalData", totalData)
     console.log("data", data)
     return (

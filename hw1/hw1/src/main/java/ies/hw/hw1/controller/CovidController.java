@@ -11,30 +11,32 @@ import org.springframework.web.bind.annotation.RestController;
 import ies.hw.hw1.service.CovidService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class CovidController {
     
     @Autowired
     private CovidService service;
 
     @GetMapping("/countries")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<String> getAllCountries(@RequestParam(required = false) String continent) {
-        if (continent != null) {
-            // TODO
-            System.out.println("Getting all countries for continent: " + continent);
-            return service.getAllCountries();
-        }
+    public ResponseEntity<String> getAllCountries() {
         System.out.println("Getting all countries");
         return service.getAllCountries();
     }
 
     @GetMapping("/countries/{name}")
-    public ResponseEntity<String> getCountryByName(@PathVariable(value = "name") String name) {
+    public ResponseEntity<String> getCountryByName(@PathVariable(value = "name") String name, @RequestParam(required = false) String day) {
+
+        if (day != null) {
+            // TODO
+            System.out.println("Getting all countries for day: " + day);
+            return service.getStatsByCountryAndDate(name, day);
+        }
+
         System.out.println("Getting Country by name: " + name);
         return service.getStatsByCountry(name);
     }
 
-    // TODO: GetMapping to continents?????
+    // TODO: GetMapping to continents????? (not worth it i think lmao)
 
     @GetMapping("/continents/{name}")
     public ResponseEntity<String> getContinents(@PathVariable(value = "name") String name) {
