@@ -43,7 +43,4 @@ public class CovidController {
         System.out.println("Getting Continent by name: " + name);
         return service.getStatsByContinent(name);
     }
-
-
-
 }

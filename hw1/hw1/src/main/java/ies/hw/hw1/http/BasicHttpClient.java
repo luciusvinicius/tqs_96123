@@ -13,7 +13,7 @@ import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class BasicHttpClient {
+public class BasicHttpClient extends Thread {
     
     private static final String BASE_URL = "https://covid-193.p.rapidapi.com/";
     private static final String STATISTICS_URL = BASE_URL + "statistics";
@@ -22,7 +22,13 @@ public class BasicHttpClient {
     private static final String HEADER_HOST = "covid-193.p.rapidapi.com";
     private static final String HEADER_KEY = "3a17131f7emsh4ac69d9c09df18cp1d85e9jsn01ab2bb0f00b";
 
-    private static HashMap<String, ResponseEntity<String>> cache = new HashMap<>();
+    // private static HashMap<String, ResponseEntity<String>> cacheResponse = new HashMap<>();
+    // private static HashMap<String, Integer> cacheTimesUsed = new HashMap<>();
+    private static WeakConcurrentHashMap<String, ResponseEntity<String>> cache = new WeakConcurrentHashMap<>();
+
+    private static int cacheHits = 0;
+    private static int cacheMisses = 0;
+
 
     public static ResponseEntity<String> getAllCountries() {
         try {
@@ -59,7 +65,7 @@ public class BasicHttpClient {
     private static ResponseEntity<String> doRequest(String uri) throws IOException, InterruptedException {
 
         // Verify if response entity is present on cache
-        if (cache.containsKey(uri)) {
+        if (cache.hitOrMiss(uri)) {
             System.out.println("Cache used for url: " + uri);
             return cache.get(uri);
         }
@@ -77,6 +83,5 @@ public class BasicHttpClient {
         cache.put(uri, resp); // Insert response entity on cache
 
         return resp;
-    }
-    
+    }    
 }
