@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ies.hw.hw1.models.Cache;
 import ies.hw.hw1.service.CovidService;
 
 @RestController
@@ -27,7 +28,6 @@ public class CovidController {
     public ResponseEntity<String> getCountryByName(@PathVariable(value = "name") String name, @RequestParam(required = false) String day) {
 
         if (day != null) {
-            // TODO
             System.out.println("Getting Country for day: " + day);
             return service.getStatsByCountryAndDate(name, day);
         }
@@ -36,11 +36,15 @@ public class CovidController {
         return service.getStatsByCountry(name);
     }
 
-    // TODO: GetMapping to continents????? (not worth it i think lmao)
-
     @GetMapping("/continents/{name}")
     public ResponseEntity<String> getContinents(@PathVariable(value = "name") String name) {
         System.out.println("Getting Continent by name: " + name);
         return service.getStatsByContinent(name);
+    }
+
+    @GetMapping("/cache/usage")
+    public Cache getCache() {
+        System.out.println("Returning cache info: ");
+        return service.getCacheInfo();
     }
 }

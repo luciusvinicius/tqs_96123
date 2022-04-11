@@ -5,22 +5,18 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import ies.hw.hw1.models.Cache;
+
 public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
 
     private static final long serialVersionUID = 1L;
 
     private Map<K, Long> timeMap = new ConcurrentHashMap<K, Long>();
-    private int numberHits = 0;
-    private int numberMisses = 0;
     private long expiryInMillis = 10000;
+    private Cache cache = new Cache(0, 0, expiryInMillis);
     private static final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:SSS");
 
     public WeakConcurrentHashMap() {
-        initialize();
-    }
-
-    public WeakConcurrentHashMap(long expiryInMillis) {
-        this.expiryInMillis = expiryInMillis;
         initialize();
     }
 
@@ -54,25 +50,17 @@ public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
 
     public boolean hitOrMiss(K key) {
         if (containsKey(key)) {
-            numberHits++;
+            cache.setNumberOfHits(cache.getNumberOfHits() + 1);
             return true;
         }
         else {
-            numberMisses++;
+            cache.setNumberOfMisses(cache.getNumberOfMisses() + 1);
             return false;
         }
     }
 
-    public int getNumberOfRequests() {
-        return numberHits + numberMisses;
-    }
-
-    public int getHits() {
-        return numberHits;
-    }
-
-    public int getMisses() {
-        return numberMisses;
+    public Cache getCache() {
+        return cache;
     }
 
     class CleanerThread extends Thread {

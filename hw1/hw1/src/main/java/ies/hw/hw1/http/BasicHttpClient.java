@@ -13,6 +13,8 @@ import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import ies.hw.hw1.models.Cache;
+
 public class BasicHttpClient extends Thread {
     
     private static final String BASE_URL = "https://covid-193.p.rapidapi.com/";
@@ -26,9 +28,9 @@ public class BasicHttpClient extends Thread {
     // private static HashMap<String, Integer> cacheTimesUsed = new HashMap<>();
     private static WeakConcurrentHashMap<String, ResponseEntity<String>> cache = new WeakConcurrentHashMap<>();
 
-    private static int cacheHits = 0;
-    private static int cacheMisses = 0;
-
+    public static Cache getCacheInfo() {
+        return cache.getCache();
+    }
 
     public static ResponseEntity<String> getAllCountries() {
         try {
@@ -84,4 +86,6 @@ public class BasicHttpClient extends Thread {
 
         return resp;
     }    
+
+
 }

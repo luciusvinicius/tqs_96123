@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import ies.hw.hw1.http.BasicHttpClient;
-import ies.hw.hw1.models.Country;
+import ies.hw.hw1.models.Cache;
 
 @Service
 public class CovidService {
@@ -33,5 +33,9 @@ public class CovidService {
     public ResponseEntity<String> getAllContinents() {
         ResponseEntity<String> response = BasicHttpClient.getAllCountries();
         return response;
+    }
+
+    public Cache getCacheInfo() {
+        return BasicHttpClient.getCacheInfo();
     }
 }
