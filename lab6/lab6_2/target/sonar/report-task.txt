@@ -1,0 +1,6 @@
+projectKey=tqslab6_2
+serverUrl=http://localhost:9000
+serverVersion=9.4.0.54424
+dashboardUrl=http://localhost:9000/dashboard?id=tqslab6_2
+ceTaskId=AYAY47KtD-sY3XsBiYDx
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYAY47KtD-sY3XsBiYDx
