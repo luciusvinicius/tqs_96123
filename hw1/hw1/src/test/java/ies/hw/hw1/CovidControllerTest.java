@@ -47,19 +47,13 @@ public class CovidControllerTest {
 
     final Cache CACHE_USAGE = new Cache(2, 1, 1000000);
 
-
-    final ResponseEntity<String> URL_NOT_FOUND = new ResponseEntity<>(
-        "{\"timestamp\":\"2022-04-14T15:35:58.815+00:00\",\"status\":404,\"error\":\"Not Found\",\"path\":\"/randompage\"}",
-        HttpStatus.OK
-    );
-
     final ResponseEntity<String> COUNTRY_NOT_FOUND = new ResponseEntity<>(
         "{\"get\":\"history\",\"parameters\":{\"country\":\"not_existent\"},\"errors\":[],\"results\":0,\"response\":[]}",
         HttpStatus.OK
     );
 
     @Test
-    void getAllCountriesSuccess() throws Exception {
+    void getAllCountries() throws Exception {
 
         when(service.getAllCountries()).thenReturn(ALL_COUNTRIES);
 
@@ -90,6 +84,21 @@ public class CovidControllerTest {
     }
 
     @Test
+    void getSpecificCountryNotFound() throws Exception {
+
+        String country = "not_existent";
+
+        when(service.getStatsByCountry(country)).thenReturn(COUNTRY_NOT_FOUND);
+
+        mvc.perform(
+            get("/countries/not_existent")
+        )
+        .andExpect(jsonPath("$.results", is(0)));
+
+        verify(service, times(1)).getStatsByCountry(country);
+    }
+
+    @Test
     void getCacheUsage() throws Exception {
 
         when(service.getCacheInfo()).thenReturn(CACHE_USAGE);
@@ -101,12 +110,8 @@ public class CovidControllerTest {
         .andExpect(jsonPath("$.numberOfHits", is(2)))
         .andExpect(jsonPath("$.numberOfMisses", is(1)))
         .andExpect(jsonPath("$.numberOfRequests", is(3)));
-    
-
         // "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
-
 
         verify(service, times(1)).getCacheInfo();
     }
-
 }
