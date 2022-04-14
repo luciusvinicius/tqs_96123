@@ -22,6 +22,7 @@ public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
 
     public WeakConcurrentHashMap(long ttl) {
         expiryInMillis = ttl;
+        initialize();
     }
 
     void initialize() {
