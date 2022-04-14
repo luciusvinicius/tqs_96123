@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import ies.hw.hw1.controller.CovidController;
 import ies.hw.hw1.service.CovidService;
+import ies.hw.hw1.models.Cache;
 
 import java.util.Objects;
 
@@ -40,17 +41,20 @@ public class CovidControllerTest {
         );
 
     final ResponseEntity<String> SPECIFIC_COUNTRY = new ResponseEntity<>(
-        "{\"get\":\"history\",\"parameters\":{\"country\":\"brazil\"},\"errors\":[],\"results\":3068,\"response\":[{\"continent\":\"South-America\",\"country\":\"Brazil\",\"population\":215245721,\"cases\":{\"new\":\"+26924\",\"active\":381625,\"critical\":8318,\"recovered\":29167518,\"1M_pop\":\"140355\",\"total\":30210853},\"deaths\":{\"new\":\"+158\",\"1M_pop\":\"3074\",\"total\":661710},\"tests\":{\"1M_pop\":\"296295\",\"total\":63776166},\"day\":\"2022-04-14\",\"time\":\"2022-04-14T15:15:03+00:00\"}",
+        "{\"get\":\"history\",\"parameters\":{\"country\":\"brazil\"},\"errors\":[],\"results\":1,\"response\":[{\"continent\":\"South-America\",\"country\":\"Brazil\",\"population\":215245721,\"cases\":{\"new\":\"+26924\",\"active\":381625,\"critical\":8318,\"recovered\":29167518,\"1M_pop\":\"140355\",\"total\":30210853},\"deaths\":{\"new\":\"+158\",\"1M_pop\":\"3074\",\"total\":661710},\"tests\":{\"1M_pop\":\"296295\",\"total\":63776166},\"day\":\"2022-04-14\",\"time\":\"2022-04-14T15:15:03+00:00\"}]}",
         HttpStatus.OK
     );
 
-    final ResponseEntity<String> CACHE_USAGE = new ResponseEntity<>(
-        "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
-        HttpStatus.OK
-    );
+    final Cache CACHE_USAGE = new Cache(2, 1, 1000000);
 
-    final ResponseEntity<String> NOT_FOUND = new ResponseEntity<>(
+
+    final ResponseEntity<String> URL_NOT_FOUND = new ResponseEntity<>(
         "{\"timestamp\":\"2022-04-14T15:35:58.815+00:00\",\"status\":404,\"error\":\"Not Found\",\"path\":\"/randompage\"}",
+        HttpStatus.OK
+    );
+
+    final ResponseEntity<String> COUNTRY_NOT_FOUND = new ResponseEntity<>(
+        "{\"get\":\"history\",\"parameters\":{\"country\":\"not_existent\"},\"errors\":[],\"results\":0,\"response\":[]}",
         HttpStatus.OK
     );
 
@@ -66,7 +70,43 @@ public class CovidControllerTest {
         .andExpect(jsonPath("$.results", is(233)));
 
         verify(service, times(1)).getAllCountries();
+    }
 
+    @Test
+    void getSpecificCountry() throws Exception {
+
+        String country = "brazil";
+
+        when(service.getStatsByCountry(country)).thenReturn(SPECIFIC_COUNTRY);
+
+        mvc.perform(
+            get("/countries/brazil")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.results", is(1)))
+        .andExpect(jsonPath("$.response[0].country", is("Brazil")));
+
+        verify(service, times(1)).getStatsByCountry(country);
+    }
+
+    @Test
+    void getCacheUsage() throws Exception {
+
+        when(service.getCacheInfo()).thenReturn(CACHE_USAGE);
+
+        mvc.perform(
+            get("/cache/usage")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.numberOfHits", is(2)))
+        .andExpect(jsonPath("$.numberOfMisses", is(1)))
+        .andExpect(jsonPath("$.numberOfRequests", is(3)));
+    
+
+        // "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
+
+
+        verify(service, times(1)).getCacheInfo();
     }
 
 }
