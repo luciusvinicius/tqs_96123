@@ -25,11 +25,6 @@ public class CovidService {
         return BasicHttpClient.getCountryByRegionAndDate(name, date);
     }
 
-    public ResponseEntity<String> getAllContinents() {
-        ResponseEntity<String> response = BasicHttpClient.getAllCountries();
-        return response;
-    }
-
     public Cache getCacheInfo() {
         return BasicHttpClient.getCacheInfo();
     }

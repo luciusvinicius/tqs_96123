@@ -36,12 +36,6 @@ public class CovidController {
         return service.getStatsByCountry(name);
     }
 
-    @GetMapping("/continents/{name}")
-    public ResponseEntity<String> getContinents(@PathVariable(value = "name") String name) {
-        System.out.println("Getting Continent by name: " + name);
-        return service.getStatsByContinent(name);
-    }
-
     @GetMapping("/cache/usage")
     public Cache getCache() {
         System.out.println("Returning cache info: ");

@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.*;
 import org.springframework.http.HttpStatus;
@@ -23,7 +21,6 @@ public class CacheTest {
 
     private long ttl = 1000; // (1 second) ttl only for the caching cache
     private WeakConcurrentHashMap<String, ResponseEntity<String>> cache;
-    private final CountDownLatch waiter = new CountDownLatch(1);
     
     @BeforeEach
     void setUp() {
