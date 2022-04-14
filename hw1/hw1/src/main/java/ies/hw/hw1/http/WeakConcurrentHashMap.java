@@ -12,12 +12,16 @@ public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
     private static final long serialVersionUID = 1L;
 
     private Map<K, Long> timeMap = new ConcurrentHashMap<K, Long>();
-    private long expiryInMillis = 10000;
+    private long expiryInMillis = 1000000;
     private Cache cache = new Cache(0, 0, expiryInMillis);
     private static final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:SSS");
 
     public WeakConcurrentHashMap() {
         initialize();
+    }
+
+    public WeakConcurrentHashMap(long ttl) {
+        expiryInMillis = ttl;
     }
 
     void initialize() {
