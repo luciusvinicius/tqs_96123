@@ -18,6 +18,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -60,8 +63,10 @@ public class CovidControllerTest {
 
         JSONObject specific_country = generateJSONObject("{\"get\":\"history\",\"parameters\":{\"country\":\"brazil\"},\"errors\":[],\"results\":1,\"response\":[{\"continent\":\"South-America\",\"country\":\"Brazil\",\"population\":215245721,\"cases\":{\"new\":\"+26924\",\"active\":381625,\"critical\":8318,\"recovered\":29167518,\"1M_pop\":\"140355\",\"total\":30210853},\"deaths\":{\"new\":\"+158\",\"1M_pop\":\"3074\",\"total\":661710},\"tests\":{\"1M_pop\":\"296295\",\"total\":63776166},\"day\":\"2022-04-14\",\"time\":\"2022-04-14T15:15:03+00:00\"}]}");
         String country = "brazil";
+        List<JSONObject> group = new ArrayList<>();
+        group.add(specific_country);
 
-        when(client.getCountryByRegion(country)).thenReturn(specific_country);
+        when(client.getCountryByRegion(country)).thenReturn(group);
 
         mvc.perform(
             get("/api1/countries/brazil")
@@ -78,8 +83,10 @@ public class CovidControllerTest {
 
         JSONObject country_not_found = generateJSONObject("{\"get\":\"history\",\"parameters\":{\"country\":\"not_existent\"},\"errors\":[],\"results\":0,\"response\":[]}");
         String country = "not_existent";
+        List<JSONObject> group = new ArrayList<>();
+        group.add(country_not_found);
 
-        when(client.getCountryByRegion(country)).thenReturn(country_not_found);
+        when(client.getCountryByRegion(country)).thenReturn(group);
 
         mvc.perform(
             get("/api1/countries/not_existent")

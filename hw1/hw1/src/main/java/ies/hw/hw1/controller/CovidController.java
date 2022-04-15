@@ -40,7 +40,8 @@ public class CovidController {
     ) throws ParseException {
 
         if (startDay != null && endDay != null) {
-            System.out.println("API 1 - Getting Country for day: " + startDay);
+            System.out.println("API 1 - Getting Country for day: " + startDay + " until " + endDay);
+
             return client1.getCountryByRegionAndDate(name, startDay, endDay);
         }
 
@@ -61,12 +62,12 @@ public class CovidController {
     }
 
     @GetMapping("/api2/countries/{name}")
-    public JSONObject getCountryByName2(@PathVariable(value = "name") String name, 
+    public List<JSONObject> getCountryByName2(@PathVariable(value = "name") String name, 
     @RequestParam(required = false) String startDay, 
     @RequestParam(required = false) String endDay) throws ParseException {
 
         if (startDay != null && endDay != null) {
-            System.out.println("API 2 - Getting Country for day: " + startDay);
+            System.out.println("API 2 - Getting Country for day: " + startDay + " until " + endDay);
             return client2.getCountryByRegionAndDate(name, startDay, endDay);
         }
 

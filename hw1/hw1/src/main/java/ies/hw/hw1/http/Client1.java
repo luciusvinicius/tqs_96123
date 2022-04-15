@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -41,28 +43,41 @@ public class Client1 extends Thread implements BasicHttpClient {
     }
 
     public List<JSONObject> getCountryByRegion(String country) throws ParseException {
-        // try {
+        try {
 
-        //     return doRequest(HISTORY_URL + "?country=" + country);
-        // }
-        // catch (IOException | InterruptedException e) {
-        //     e.printStackTrace();
-        //     return null;
-        // }
-        return null;
+            JSONObject response = doRequest(HISTORY_URL + "?country=" + country);
+            List<JSONObject> response_group = new ArrayList<>();
+            response_group.add(response);
+            return response_group;
+        }
+        catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public List<JSONObject> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException {
-        // try {
-            
-        //     // return doRequest(HISTORY_URL + "?country=" + country + "&day=" + startDate);
-        //     return null;
-        // }
-        // catch (IOException | InterruptedException e) {
-        //     e.printStackTrace();
-        //     return null;
-        // }
-        return null;
+        try {
+            return filterByDateRange(country, startDate, endDate);
+        }
+        catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private List<JSONObject> filterByDateRange(String country, String startDate, String endDate) throws IOException, InterruptedException, ParseException {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        List<JSONObject> response_group = new ArrayList<>();
+        
+        for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1))
+        {
+            JSONObject response = doRequest(HISTORY_URL + "?country=" + country + "&day=" + date.toString());
+            response_group.add(response);
+        }
+
+        return response_group;
     }
 
     private JSONObject doRequest(String uri) throws IOException, InterruptedException, ParseException {

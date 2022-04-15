@@ -57,7 +57,6 @@ public class Client2 extends Thread implements BasicHttpClient {
     public List<JSONObject> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException {
         try {
 
-            
             return filterByDateRange(country, startDate, endDate);
         }
         catch (IOException | InterruptedException e) {
@@ -73,12 +72,12 @@ public class Client2 extends Thread implements BasicHttpClient {
         
         for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1))
         {
-            JSONObject response = doRequest(REPORTS_URL + "?region_name=" + country + "&date=" + startDate);
+            JSONObject response = doRequest(REPORTS_URL + "?region_name=" + country + "&date=" + date.toString());
             response_group.add(response);
         }
 
         return response_group;
-    }
+    }  
 
 
     private JSONObject doRequest(String uri) throws IOException, InterruptedException, ParseException {
