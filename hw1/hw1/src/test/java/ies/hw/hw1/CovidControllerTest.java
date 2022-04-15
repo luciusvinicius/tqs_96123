@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import ies.hw.hw1.controller.CovidController;
 import ies.hw.hw1.http.BasicHttpClient;
-import ies.hw.hw1.service.CovidService;
+// import ies.hw.hw1.service.CovidService;
 import ies.hw.hw1.models.Cache;
 
 import static org.mockito.Mockito.*;
@@ -47,7 +47,7 @@ public class CovidControllerTest {
         when(client.getAllCountries()).thenReturn(all_countries);
 
         mvc.perform(
-            get("/countries")
+            get("/api1/countries")
         )
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.results", is(233)));
@@ -64,7 +64,7 @@ public class CovidControllerTest {
         when(client.getCountryByRegion(country)).thenReturn(specific_country);
 
         mvc.perform(
-            get("/countries/brazil")
+            get("/api1/countries/brazil")
         )
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.results", is(1)))
@@ -82,7 +82,7 @@ public class CovidControllerTest {
         when(client.getCountryByRegion(country)).thenReturn(country_not_found);
 
         mvc.perform(
-            get("/countries/not_existent")
+            get("/api1/countries/not_existent")
         )
         .andExpect(jsonPath("$.results", is(0)));
 
@@ -97,7 +97,7 @@ public class CovidControllerTest {
         when(client.getCacheInfo()).thenReturn(cache_usage);
 
         mvc.perform(
-            get("/cache/usage")
+            get("/api1/cache/usage")
         )
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.numberOfHits", is(2)))
