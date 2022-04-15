@@ -6,29 +6,34 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import ies.hw.hw1.models.Cache;
 
+@Service
 public class BasicHttpClient extends Thread {
     
-    private static final String BASE_URL = "https://covid-193.p.rapidapi.com/";
-    private static final String STATISTICS_URL = BASE_URL + "statistics";
-    private static final String HISTORY_URL = BASE_URL + "history";
-    private static final String COUNTRIES_URL = BASE_URL + "countries";
-    private static final String HEADER_HOST = "covid-193.p.rapidapi.com";
-    private static final String HEADER_KEY = "3a17131f7emsh4ac69d9c09df18cp1d85e9jsn01ab2bb0f00b";
+    private final String BASE_URL = "https://covid-193.p.rapidapi.com/";
+    private final String STATISTICS_URL = BASE_URL + "statistics";
+    private final String HISTORY_URL = BASE_URL + "history";
+    private final String COUNTRIES_URL = BASE_URL + "countries";
+    private final String HEADER_HOST = "covid-193.p.rapidapi.com";
+    private final String HEADER_KEY = "3a17131f7emsh4ac69d9c09df18cp1d85e9jsn01ab2bb0f00b";
 
-    // private static HashMap<String, ResponseEntity<String>> cacheResponse = new HashMap<>();
-    // private static HashMap<String, Integer> cacheTimesUsed = new HashMap<>();
-    private static WeakConcurrentHashMap<String, ResponseEntity<String>> cache = new WeakConcurrentHashMap<>();
+    // private  HashMap<String, ResponseEntity<String>> cacheResponse = new HashMap<>();
+    // private  HashMap<String, Integer> cacheTimesUsed = new HashMap<>();
+    private WeakConcurrentHashMap<String, JSONObject> cache = new WeakConcurrentHashMap<>();
 
-    public static Cache getCacheInfo() {
+    public Cache getCacheInfo() {
         return cache.getCache();
     }
 
-    public static ResponseEntity<String> getAllCountries() {
+    public JSONObject getAllCountries() throws ParseException {
         try {
             return doRequest(COUNTRIES_URL);
         }
@@ -38,7 +43,7 @@ public class BasicHttpClient extends Thread {
         }
     }
 
-    public static ResponseEntity<String> getCountryByRegion(String country) {
+    public JSONObject getCountryByRegion(String country) throws ParseException {
         try {
 
             return doRequest(HISTORY_URL + "?country=" + country);
@@ -49,7 +54,7 @@ public class BasicHttpClient extends Thread {
         }
     }
 
-    public static ResponseEntity<String> getCountryByRegionAndDate(String country, String date) {
+    public JSONObject getCountryByRegionAndDate(String country, String date) throws ParseException {
         try {
             
             return doRequest(HISTORY_URL + "?country=" + country + "&day=" + date);
@@ -60,7 +65,7 @@ public class BasicHttpClient extends Thread {
         }
     }
 
-    private static ResponseEntity<String> doRequest(String uri) throws IOException, InterruptedException {
+    private JSONObject doRequest(String uri) throws IOException, InterruptedException, ParseException {
 
         // Verify if response entity is present on cache
         if (cache.hitOrMiss(uri)) {
@@ -76,7 +81,7 @@ public class BasicHttpClient extends Thread {
         .method("GET", HttpRequest.BodyPublishers.noBody())
         .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        ResponseEntity<String> resp = new ResponseEntity<>(response.body(), HttpStatus.valueOf(response.statusCode()));
+        JSONObject resp = (JSONObject) new JSONParser().parse(response.body());
 
         cache.put(uri, resp); // Insert response entity on cache
 

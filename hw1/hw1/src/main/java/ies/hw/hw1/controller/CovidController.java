@@ -1,5 +1,7 @@
 package ies.hw.hw1.controller;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ies.hw.hw1.http.BasicHttpClient;
 import ies.hw.hw1.models.Cache;
 import ies.hw.hw1.service.CovidService;
 
@@ -16,29 +19,29 @@ import ies.hw.hw1.service.CovidService;
 public class CovidController {
     
     @Autowired
-    private CovidService service;
+    private BasicHttpClient client;
 
     @GetMapping("/countries")
-    public ResponseEntity<String> getAllCountries() {
+    public JSONObject getAllCountries() throws ParseException {
         System.out.println("Getting all countries");
-        return service.getAllCountries();
+        return client.getAllCountries();
     }
 
     @GetMapping("/countries/{name}")
-    public ResponseEntity<String> getCountryByName(@PathVariable(value = "name") String name, @RequestParam(required = false) String day) {
+    public JSONObject getCountryByName(@PathVariable(value = "name") String name, @RequestParam(required = false) String day) throws ParseException {
 
         if (day != null) {
             System.out.println("Getting Country for day: " + day);
-            return service.getStatsByCountryAndDate(name, day);
+            return client.getCountryByRegionAndDate(name, day);
         }
 
         System.out.println("Getting Country by name: " + name);
-        return service.getStatsByCountry(name);
+        return client.getCountryByRegion(name);
     }
 
     @GetMapping("/cache/usage")
     public Cache getCache() {
         System.out.println("Returning cache info: ");
-        return service.getCacheInfo();
+        return client.getCacheInfo();
     }
 }

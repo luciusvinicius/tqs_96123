@@ -1,5 +1,7 @@
 package ies.hw.hw1.service;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -8,24 +10,26 @@ import ies.hw.hw1.models.Cache;
 
 @Service
 public class CovidService {
+
+    private BasicHttpClient client = new BasicHttpClient();
     
-    public ResponseEntity<String> getAllCountries() {
-        return BasicHttpClient.getAllCountries();
+    public JSONObject getAllCountries() throws ParseException {
+        return client.getAllCountries();
     }
 
-    public ResponseEntity<String> getStatsByContinent(String continent) {
-        return BasicHttpClient.getCountryByRegion(continent);
+    public JSONObject getStatsByContinent(String continent) throws ParseException {
+        return client.getCountryByRegion(continent);
     }
 
-    public ResponseEntity<String> getStatsByCountry(String name) {
-        return BasicHttpClient.getCountryByRegion(name);
+    public JSONObject getStatsByCountry(String name) throws ParseException {
+        return client.getCountryByRegion(name);
     }
 
-    public ResponseEntity<String> getStatsByCountryAndDate(String name, String date) {
-        return BasicHttpClient.getCountryByRegionAndDate(name, date);
+    public JSONObject getStatsByCountryAndDate(String name, String date) throws ParseException {
+        return client.getCountryByRegionAndDate(name, date);
     }
 
     public Cache getCacheInfo() {
-        return BasicHttpClient.getCacheInfo();
+        return client.getCacheInfo();
     }
 }
