@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ies.hw.hw1.http.BasicHttpClient;
+import ies.hw.hw1.http.Client1;
 import ies.hw.hw1.models.Cache;
 import ies.hw.hw1.service.CovidService;
 
@@ -19,29 +20,29 @@ import ies.hw.hw1.service.CovidService;
 public class CovidController {
     
     @Autowired
-    private BasicHttpClient client;
+    private Client1 client1;
 
-    @GetMapping("/countries")
+    @GetMapping("/api1/countries")
     public JSONObject getAllCountries() throws ParseException {
         System.out.println("Getting all countries");
-        return client.getAllCountries();
+        return client1.getAllCountries();
     }
 
-    @GetMapping("/countries/{name}")
+    @GetMapping("/api1/countries/{name}")
     public JSONObject getCountryByName(@PathVariable(value = "name") String name, @RequestParam(required = false) String day) throws ParseException {
 
         if (day != null) {
             System.out.println("Getting Country for day: " + day);
-            return client.getCountryByRegionAndDate(name, day);
+            return client1.getCountryByRegionAndDate(name, day);
         }
 
         System.out.println("Getting Country by name: " + name);
-        return client.getCountryByRegion(name);
+        return client1.getCountryByRegion(name);
     }
 
-    @GetMapping("/cache/usage")
+    @GetMapping("/api1/cache/usage")
     public Cache getCache() {
         System.out.println("Returning cache info: ");
-        return client.getCacheInfo();
+        return client1.getCacheInfo(); 
     }
 }
