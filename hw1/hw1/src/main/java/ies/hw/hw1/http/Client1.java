@@ -71,7 +71,7 @@ public class Client1 extends Thread implements BasicHttpClient {
         LocalDate end = LocalDate.parse(endDate);
         List<JSONObject> response_group = new ArrayList<>();
         
-        for (LocalDate date = start; date.isBefore(end); date = date.plusDays(1))
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1))
         {
             JSONObject response = doRequest(HISTORY_URL + "?country=" + country + "&day=" + date.toString());
             response_group.add(response);

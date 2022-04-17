@@ -50,7 +50,7 @@ public class CovidController {
     }
 
     @GetMapping("/api1/cache/usage")
-    public Cache getCache() {
+    public Cache getCache1() {
         System.out.println("API 1 - Returning cache info: ");
         return client1.getCacheInfo(); 
     }
@@ -73,6 +73,12 @@ public class CovidController {
 
         System.out.println("API 2 - Getting Country by name: " + name);
         return client2.getCountryByRegion(name);
+    }
+
+    @GetMapping("/api2/cache/usage")
+    public Cache getCache2() {
+        System.out.println("API 2 - Returning cache info: ");
+        return client2.getCacheInfo(); 
     }
 
 }
