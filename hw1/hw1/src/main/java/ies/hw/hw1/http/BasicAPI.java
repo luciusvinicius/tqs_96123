@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import ies.hw.hw1.models.Cache;
 
 @Service
-public interface BasicHttpClient {
+public interface BasicAPI {
 
     public Cache getCacheInfo();
     public JSONObject getAllCountries() throws ParseException;

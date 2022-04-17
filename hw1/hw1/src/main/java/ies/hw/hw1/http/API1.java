@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import ies.hw.hw1.models.Cache;
 
 @Service
-public class Client1 extends Thread implements BasicHttpClient {
+public class API1 extends Thread implements BasicAPI {
     
     private final String BASE_URL = "https://covid-193.p.rapidapi.com/";
     private final String STATISTICS_URL = BASE_URL + "statistics";

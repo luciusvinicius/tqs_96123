@@ -17,15 +17,37 @@ import org.springframework.stereotype.Service;
 import ies.hw.hw1.models.Cache;
 
 @Service
-public class Client2 extends Thread implements BasicHttpClient {
+public class API2 extends Thread implements BasicAPI {
     
     private final String BASE_URL = "https://covid-19-statistics.p.rapidapi.com/";
     private final String REPORTS_URL = BASE_URL + "reports";
     private final String REGIONS_URL = BASE_URL + "regions";
     private final String HEADER_HOST = "covid-19-statistics.p.rapidapi.com";
     private final String HEADER_KEY = "3a17131f7emsh4ac69d9c09df18cp1d85e9jsn01ab2bb0f00b";
-    
+
+    public String getHost() {
+        return HEADER_HOST;
+    }
+
+    public String getKey() {
+        return HEADER_KEY;
+    }
+
     private WeakConcurrentHashMap<String, JSONObject> cache = new WeakConcurrentHashMap<>();
+
+    private Client client = new Client();
+
+    public Client getClient() {
+        return this.client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public WeakConcurrentHashMap<String, JSONObject> getConcurrentCash() {
+        return cache;
+    }
 
     public JSONObject getAllCountries() throws ParseException {
         try {
@@ -79,28 +101,11 @@ public class Client2 extends Thread implements BasicHttpClient {
         return response_group;
     }  
 
+    private JSONObject doRequest(String url) throws IOException, InterruptedException, ParseException {
+        return client.doRequest(url, cache, HEADER_HOST, HEADER_KEY);
+    }
 
-    private JSONObject doRequest(String uri) throws IOException, InterruptedException, ParseException {
 
-        // Verify if response entity is present on cache
-        if (cache.hitOrMiss(uri)) {
-            System.out.println("Cache used for url: " + uri);
-            return cache.get(uri);
-        }
 
-        HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(uri))
-        .header("X-RapidAPI-Host", HEADER_HOST)
-        .header("X-RapidAPI-Key", HEADER_KEY)
-        .header("Content-Type", "application/json")
-        .method("GET", HttpRequest.BodyPublishers.noBody())
-        .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        JSONObject resp = (JSONObject) new JSONParser().parse(response.body());
-
-        cache.put(uri, resp); // Insert response entity on cache
-
-        return resp;
-    }    
 
 }

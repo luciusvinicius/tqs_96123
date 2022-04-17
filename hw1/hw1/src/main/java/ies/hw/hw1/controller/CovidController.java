@@ -5,16 +5,14 @@ import java.util.List;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ies.hw.hw1.http.BasicHttpClient;
-import ies.hw.hw1.http.Client1;
-import ies.hw.hw1.http.Client2;
+import ies.hw.hw1.http.API1;
+import ies.hw.hw1.http.API2;
 import ies.hw.hw1.models.Cache;
 
 @RestController
@@ -22,10 +20,10 @@ import ies.hw.hw1.models.Cache;
 public class CovidController {
     
     @Autowired
-    private Client1 client1;
+    private API1 client1;
 
     @Autowired
-    private Client2 client2;
+    private API2 client2;
 
     @GetMapping("/api1/countries")
     public JSONObject getAllCountries() throws ParseException {
