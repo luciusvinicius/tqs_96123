@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -44,8 +45,24 @@ public class CovidControllerTest {
     @MockBean
     private Client2 client2;
 
+    private JSONArray generateJSONArray(String s) throws ParseException {
+        // System.out.println("Sussy object: " + s);
+        return (JSONArray) new JSONParser().parse(s);
+    }
+
     private JSONObject generateJSONObject(String s) throws ParseException {
+        // System.out.println("Sussy object: " + s);
         return (JSONObject) new JSONParser().parse(s);
+    }
+
+    private List<JSONObject> jsonArrayToListOfObjects(JSONArray array) {
+        List<JSONObject> retJson = new ArrayList<>();
+
+        for (int i = 0; i < array.size(); i++) {
+            retJson.add((JSONObject) array.get(i));
+        }
+
+        return retJson;
     }
 
     @Test
@@ -80,30 +97,68 @@ public class CovidControllerTest {
         verify(client2, times(1)).getAllCountries();
     }
 
+    @Test
+    void getSpecificCountryForAPI1() throws Exception {
+
+        JSONArray specific_country = generateJSONArray("[{\"get\":\"history\",\"parameters\":{\"country\":\"brazil\"},\"errors\":[],\"results\":1,\"response\":[{\"continent\":\"South-America\",\"country\":\"Brazil\",\"population\":215245721,\"cases\":{\"new\":\"+26924\",\"active\":381625,\"critical\":8318,\"recovered\":29167518,\"1M_pop\":\"140355\",\"total\":30210853},\"deaths\":{\"new\":\"+158\",\"1M_pop\":\"3074\",\"total\":661710},\"tests\":{\"1M_pop\":\"296295\",\"total\":63776166},\"day\":\"2022-04-14\",\"time\":\"2022-04-14T15:15:03+00:00\"}]}]");
+        String country = "brazil";
+        // List<JSONObject> group = new ArrayList<>();
+        // group.add(specific_country);
+
+        when(client1.getCountryByRegion(country)).thenReturn(jsonArrayToListOfObjects(specific_country));
+
+        mvc.perform(
+            get("/api1/countries/brazil")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].results", is(1)))
+        .andExpect(jsonPath("$[0].response[0].country", is("Brazil")));
+
+        verify(client1, times(1)).getCountryByRegion(country);
+    }
+
+    @Test
+    void getSpecificCountryForAPI2() throws Exception {
+
+        JSONArray specific_country = generateJSONArray("[{\"data\":[{\"date\":\"2022-04-16\",\"confirmed_diff\":0,\"active_diff\":0,\"deaths_diff\":0,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0161,\"last_update\":\"2022-04-17 04:20:59\",\"active\":122358,\"region\":{\"iso\":\"BRA\",\"province\":\"Acre\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-9.0238\",\"long\":\"-70.812\"},\"confirmed\":124354,\"deaths\":1996}]}]");
+        String country = "brazil";
+        // List<JSONObject> group = new ArrayList<>();
+        // group.add(specific_country);
+
+        when(client1.getCountryByRegion(country)).thenReturn(jsonArrayToListOfObjects(specific_country));
+
+        mvc.perform(
+            get("/api1/countries/brazil")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].data[0].fatality_rate", is(0.0161)))
+        .andExpect(jsonPath("$[0].data[0].region.name", is("Brazil")));
+
+        verify(client1, times(1)).getCountryByRegion(country);
+    }
+
+    @Test
+    void getSpecificCountryNotFoundForAPI1() throws Exception {
+
+        JSONObject country_not_found = generateJSONObject("{\"get\":\"history\",\"parameters\":{\"country\":\"not_existent\"},\"errors\":[],\"results\":0,\"response\":[]}");
+        String country = "not_existent";
+        List<JSONObject> group = new ArrayList<>();
+        group.add(country_not_found);
+
+        when(client1.getCountryByRegion(country)).thenReturn(group);
+
+        mvc.perform(
+            get("/api1/countries/not_existent")
+        )
+        .andExpect(jsonPath("$[0].results", is(0)));
+
+        verify(client1, times(1)).getCountryByRegion(country);
+    }
+
     // @Test
-    // void getSpecificCountryForAPI1() throws Exception {
+    // void getSpecificCountryNotFoundForAPI2() throws Exception {
 
-    //     JSONObject specific_country = generateJSONObject("{\"get\":\"history\",\"parameters\":{\"country\":\"brazil\"},\"errors\":[],\"results\":1,\"response\":[{\"continent\":\"South-America\",\"country\":\"Brazil\",\"population\":215245721,\"cases\":{\"new\":\"+26924\",\"active\":381625,\"critical\":8318,\"recovered\":29167518,\"1M_pop\":\"140355\",\"total\":30210853},\"deaths\":{\"new\":\"+158\",\"1M_pop\":\"3074\",\"total\":661710},\"tests\":{\"1M_pop\":\"296295\",\"total\":63776166},\"day\":\"2022-04-14\",\"time\":\"2022-04-14T15:15:03+00:00\"}]}");
-    //     String country = "brazil";
-    //     List<JSONObject> group = new ArrayList<>();
-    //     group.add(specific_country);
-
-    //     when(client1.getCountryByRegion(country)).thenReturn(group);
-
-    //     mvc.perform(
-    //         get("/api1/countries/brazil")
-    //     )
-    //     .andExpect(status().isOk())
-    //     .andExpect(jsonPath("$.results", is(1)))
-    //     .andExpect(jsonPath("$.response[0].country", is("Brazil")));
-
-    //     verify(client1, times(1)).getCountryByRegion(country);
-    // }
-
-    // @Test
-    // void getSpecificCountryNotFoundForAPI1() throws Exception {
-
-    //     JSONObject country_not_found = generateJSONObject("{\"get\":\"history\",\"parameters\":{\"country\":\"not_existent\"},\"errors\":[],\"results\":0,\"response\":[]}");
+    //     JSONObject country_not_found = generateJSONObject("[{\"data\":[]}]");
     //     String country = "not_existent";
     //     List<JSONObject> group = new ArrayList<>();
     //     group.add(country_not_found);
@@ -111,29 +166,29 @@ public class CovidControllerTest {
     //     when(client1.getCountryByRegion(country)).thenReturn(group);
 
     //     mvc.perform(
-    //         get("/api1/countries/not_existent")
+    //         get("/api2/countries/not_existent")
     //     )
-    //     .andExpect(jsonPath("$.results", is(0)));
+    //     .andExpect(jsonPath("$[0].data", is(empty())));
 
     //     verify(client1, times(1)).getCountryByRegion(country);
     // }
 
-    // @Test
-    // void getCacheUsageForAPI1() throws Exception {
+    @Test
+    void getCacheUsageForAPI1() throws Exception {
 
-    //     Cache cache_usage = new Cache(2, 1, 1000000);
+        Cache cache_usage = new Cache(2, 1, 1000000);
 
-    //     when(client1.getCacheInfo()).thenReturn(cache_usage);
+        when(client1.getCacheInfo()).thenReturn(cache_usage);
 
-    //     mvc.perform(
-    //         get("/api1/cache/usage")
-    //     )
-    //     .andExpect(status().isOk())
-    //     .andExpect(jsonPath("$.numberOfHits", is(2)))
-    //     .andExpect(jsonPath("$.numberOfMisses", is(1)))
-    //     .andExpect(jsonPath("$.numberOfRequests", is(3)));
-    //     // "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
+        mvc.perform(
+            get("/api1/cache/usage")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.numberOfHits", is(2)))
+        .andExpect(jsonPath("$.numberOfMisses", is(1)))
+        .andExpect(jsonPath("$.numberOfRequests", is(3)));
+        // "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
 
-    //     verify(client1, times(1)).getCacheInfo();
-    // }
+        verify(client1, times(1)).getCacheInfo();
+    }
 }
