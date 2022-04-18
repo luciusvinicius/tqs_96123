@@ -80,7 +80,7 @@ public class API2Test {
     @Test
     void getAllCountries() throws IOException, InterruptedException, ParseException {
         
-        when(client.doRequest(REGIONS_URL,cache,api.getHost(), api.getKey()))
+        when(client.doRequest(REGIONS_URL, cache, api.getHost(), api.getKey()))
         .thenReturn(jsonMeth.generateJSONObject(ALL_COUNTRIES));
 
         JSONObject response = api.getAllCountries();
@@ -96,9 +96,12 @@ public class API2Test {
         .thenReturn(jsonMeth.generateJSONObject(SPECIFIC_COUNTRY));
 
         List<JSONObject> response = api.getCountryByRegion("brazil");
+        JSONObject data = (JSONObject) ((JSONArray) response.get(0).get("data")).get(0);
+       
+        assertThat(((JSONObject) data.get("region")).get("name"), is("Brazil"));
+        assertThat(data.get("date"), is("2022-04-16"));
+        assertThat(data.get("fatality_rate"), is(0.0161));
 
-        System.out.println("sussy response: ");
-        System.out.println(response);
 
     }
     
