@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ies.hw.hw1.http.API1;
 import ies.hw.hw1.http.API2;
 import ies.hw.hw1.models.Cache;
+import ies.hw.hw1.models.DataOutput;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,7 +33,7 @@ public class CovidController {
     }
 
     @GetMapping("/api1/countries/{name}")
-    public List<JSONObject> getCountryByName(@PathVariable(value = "name") String name, 
+    public List<DataOutput> getCountryByName(@PathVariable(value = "name") String name, 
     @RequestParam(required = false) String startDay,
     @RequestParam(required = false) String endDay
     ) throws ParseException {
@@ -60,7 +61,7 @@ public class CovidController {
     }
 
     @GetMapping("/api2/countries/{name}")
-    public List<JSONObject> getCountryByName2(@PathVariable(value = "name") String name, 
+    public List<DataOutput> getCountryByName2(@PathVariable(value = "name") String name, 
     @RequestParam(required = false) String startDay, 
     @RequestParam(required = false) String endDay) throws ParseException {
 

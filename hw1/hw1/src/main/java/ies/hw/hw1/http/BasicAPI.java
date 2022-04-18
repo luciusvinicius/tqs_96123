@@ -7,12 +7,13 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import ies.hw.hw1.models.Cache;
+import ies.hw.hw1.models.DataOutput;
 
 @Service
 public interface BasicAPI {
 
     public Cache getCacheInfo();
     public JSONObject getAllCountries() throws ParseException;
-    public List<JSONObject> getCountryByRegion(String country) throws ParseException;
-    public List<JSONObject> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException;
+    public List<DataOutput> getCountryByRegion(String country) throws ParseException;
+    public List<DataOutput> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException;
 }

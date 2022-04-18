@@ -2,9 +2,9 @@ package ies.hw.hw1.models;
 
 import java.time.LocalDate;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import net.minidev.json.JSONArray;
 
 public class DataOutput {
 
@@ -27,13 +27,16 @@ public class DataOutput {
             // TODO
         }
         else {
-            date = LocalDate.parse(json.get("date").toString());
-            active = (Long) json.get("active");
-            newActive = (Long) json.get("active_diff");
-            deaths = (Long) json.get("deaths");
-            newDeaths = (Long) json.get("deaths_diff");
-            recovered = (Long) json.get("recovered");
-            country = ((JSONObject) json.get("region")).get("name").toString();
+            System.out.println("Sussy dataoutput for JSON:");
+            JSONObject json2 = (JSONObject) ((JSONArray) json.get("data")).get(0);
+            System.out.println(json2);
+            date = LocalDate.parse(json2.get("date").toString());
+            active = (Long) json2.get("active");
+            newActive = (Long) json2.get("active_diff");
+            deaths = (Long) json2.get("deaths");
+            newDeaths = (Long) json2.get("deaths_diff");
+            recovered = (Long) json2.get("recovered");
+            country = ((JSONObject) json2.get("region")).get("name").toString();
         }
 
     }

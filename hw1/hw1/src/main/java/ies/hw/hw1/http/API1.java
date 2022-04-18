@@ -15,6 +15,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import ies.hw.hw1.models.Cache;
+import ies.hw.hw1.models.DataOutput;
 
 @Service
 public class API1 extends Thread implements BasicAPI {
@@ -37,7 +38,7 @@ public class API1 extends Thread implements BasicAPI {
     public void setClient(Client client) {
         this.client = client;
     }
-    
+
     public Cache getCacheInfo() {
         return cache.getCache();
     }
@@ -52,12 +53,13 @@ public class API1 extends Thread implements BasicAPI {
         }
     }
 
-    public List<JSONObject> getCountryByRegion(String country) throws ParseException {
+    public List<DataOutput> getCountryByRegion(String country) throws ParseException {
         try {
 
             JSONObject response = doRequest(HISTORY_URL + "?country=" + country);
-            List<JSONObject> response_group = new ArrayList<>();
-            response_group.add(response);
+            List<DataOutput> response_group = new ArrayList<>();
+            DataOutput data = new DataOutput(response, true);
+            response_group.add(data);
             return response_group;
         }
         catch (IOException | InterruptedException e) {
@@ -66,7 +68,7 @@ public class API1 extends Thread implements BasicAPI {
         }
     }
 
-    public List<JSONObject> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException {
+    public List<DataOutput> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException {
         try {
             return filterByDateRange(country, startDate, endDate);
         }
@@ -76,15 +78,16 @@ public class API1 extends Thread implements BasicAPI {
         }
     }
 
-    private List<JSONObject> filterByDateRange(String country, String startDate, String endDate) throws IOException, InterruptedException, ParseException {
+    private List<DataOutput> filterByDateRange(String country, String startDate, String endDate) throws IOException, InterruptedException, ParseException {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
-        List<JSONObject> response_group = new ArrayList<>();
+        List<DataOutput> response_group = new ArrayList<>();
         
         for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1))
         {
             JSONObject response = doRequest(HISTORY_URL + "?country=" + country + "&day=" + date.toString());
-            response_group.add(response);
+            DataOutput data = new DataOutput(response, true);
+            response_group.add(data);
         }
 
         return response_group;
