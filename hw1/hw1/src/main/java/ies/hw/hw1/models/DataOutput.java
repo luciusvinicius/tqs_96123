@@ -19,15 +19,21 @@ public class DataOutput {
     public DataOutput(JSONObject json, boolean api1) {
 
         if (api1) {
-            System.out.println("");
-            JSONObject json2 = (JSONObject) ((JSONArray) json.get("request")).get(0);
-            JSONObject cases = (JSONObject) json.get("cases");
+            JSONObject json2 = (JSONObject) ((JSONArray) json.get("response")).get(0);
+            System.out.println("JSON 2");
+            System.out.println(json2);
+            JSONObject cases = (JSONObject) json2.get("cases");
             country = json2.get("country").toString();
-            String newAct = json2.get("new").toString();
-            newAct.split("+");
-            System.out.println("Sussy newAct");
+            String newAct = cases.get("new").toString();
+            newActive = Long.parseLong(newAct.substring(1));
+            active = (Long) cases.get("active");
+            recovered = (Long) cases.get("recovered");
 
-            // TODO
+            JSONObject deathsJson = (JSONObject) json2.get("deaths");
+            deaths = (Long) deathsJson.get("total");
+            String newDeathsJson = deathsJson.get("new").toString();
+            newDeaths = Long.parseLong(newDeathsJson.substring(1));
+            date = LocalDate.parse(json2.get("day").toString());
         }
         else {
             System.out.println(json);
