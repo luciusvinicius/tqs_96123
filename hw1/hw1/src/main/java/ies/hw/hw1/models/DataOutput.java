@@ -16,12 +16,12 @@ public class DataOutput {
     private Long newDeaths;
     private Long recovered;
 
+    public DataOutput() {}
+
     public DataOutput(JSONObject json, boolean api1) {
 
         if (api1) {
             JSONObject json2 = (JSONObject) ((JSONArray) json.get("response")).get(0);
-            System.out.println("JSON 2");
-            System.out.println(json2);
             JSONObject cases = (JSONObject) json2.get("cases");
             country = json2.get("country").toString();
             String newAct = cases.get("new").toString();
