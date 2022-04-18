@@ -28,6 +28,16 @@ public class API1 extends Thread implements BasicAPI {
 
     private WeakConcurrentHashMap<String, JSONObject> cache = new WeakConcurrentHashMap<>();
 
+    private Client client = new Client();
+
+    public Client getClient() {
+        return this.client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+    
     public Cache getCacheInfo() {
         return cache.getCache();
     }
@@ -80,28 +90,8 @@ public class API1 extends Thread implements BasicAPI {
         return response_group;
     }
 
-    private JSONObject doRequest(String uri) throws IOException, InterruptedException, ParseException {
-
-        // Verify if response entity is present on cache
-        if (cache.hitOrMiss(uri)) {
-            System.out.println("Cache used for url: " + uri);
-            return cache.get(uri);
-        }
-
-        HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(uri))
-        .header("X-RapidAPI-Host", HEADER_HOST)
-        .header("X-RapidAPI-Key", HEADER_KEY)
-        .header("Content-Type", "application/json")
-        .method("GET", HttpRequest.BodyPublishers.noBody())
-        .build();
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        JSONObject resp = (JSONObject) new JSONParser().parse(response.body());
-
-        cache.put(uri, resp); // Insert response entity on cache
-
-        return resp;
-    }    
-
+    private JSONObject doRequest(String url) throws IOException, InterruptedException, ParseException {
+        return client.doRequest(url, cache, HEADER_HOST, HEADER_KEY);
+    }
 
 }

@@ -9,7 +9,9 @@ import java.net.http.HttpResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Client {
 
     public JSONObject doRequest(String uri, WeakConcurrentHashMap<String, JSONObject> cache, 
