@@ -68,7 +68,7 @@ public class API2 extends Thread implements BasicAPI {
     public List<DataOutput> getCountryByRegion(String country) throws ParseException {
         try {
             JSONObject response = doRequest(REPORTS_URL + "?region_name=" + country);
-            DataOutput data = new DataOutput(response, false);
+            DataOutput data = new DataOutput(response);
             List<DataOutput> response_group = new ArrayList<>();
             response_group.add(data);
             return response_group;
@@ -98,7 +98,7 @@ public class API2 extends Thread implements BasicAPI {
         for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1))
         {
             JSONObject response = doRequest(REPORTS_URL + "?region_name=" + country + "&date=" + date.toString());
-            DataOutput data = new DataOutput(response, false);
+            DataOutput data = new DataOutput(response);
             response_group.add(data);
         }
 

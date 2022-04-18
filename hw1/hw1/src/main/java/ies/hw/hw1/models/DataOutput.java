@@ -19,26 +19,56 @@ public class DataOutput {
     public DataOutput(JSONObject json, boolean api1) {
 
         if (api1) {
+            System.out.println("");
             JSONObject json2 = (JSONObject) ((JSONArray) json.get("request")).get(0);
             JSONObject cases = (JSONObject) json.get("cases");
             country = json2.get("country").toString();
             String newAct = json2.get("new").toString();
             newAct.split("+");
+            System.out.println("Sussy newAct");
+
             // TODO
         }
         else {
-            System.out.println("Sussy dataoutput for JSON:");
-            JSONObject json2 = (JSONObject) ((JSONArray) json.get("data")).get(0);
-            System.out.println(json2);
-            date = LocalDate.parse(json2.get("date").toString());
-            active = (Long) json2.get("active");
-            newActive = (Long) json2.get("active_diff");
-            deaths = (Long) json2.get("deaths");
-            newDeaths = (Long) json2.get("deaths_diff");
-            recovered = (Long) json2.get("recovered");
-            country = ((JSONObject) json2.get("region")).get("name").toString();
+            System.out.println(json);
+            date = LocalDate.parse(json.get("date").toString());
+            active = (Long) json.get("active");
+            newActive = (Long) json.get("active_diff");
+            deaths = (Long) json.get("deaths");
+            newDeaths = (Long) json.get("deaths_diff");
+            recovered = (Long) json.get("recovered");
+            country = ((JSONObject) json.get("region")).get("name").toString();
         }
 
+    }
+
+    public DataOutput(JSONObject json) { // API2 utilizes this sum
+        JSONArray arr = (JSONArray) json.get("data");
+
+        if (arr.isEmpty()) {
+            return;
+        }
+
+  
+        DataOutput baseData = new DataOutput( (JSONObject) arr.get(0), false);
+
+        for (int i = 1; i < arr.size(); i++) {
+            DataOutput newData = new DataOutput((JSONObject) arr.get(i), false);
+            baseData.setDeaths(baseData.getDeaths() + newData.getDeaths());
+            baseData.setRecovered(baseData.getRecovered() + newData.getRecovered());
+            baseData.setActive(baseData.getActive() + newData.getActive());
+            baseData.setNewActive(baseData.getNewActive() + newData.getNewActive());
+            baseData.setNewDeaths(baseData.getNewDeaths() + newData.getNewDeaths());
+        }
+        
+
+        active = baseData.getActive();
+        country = baseData.getCountry();
+        date = baseData.getDate();
+        deaths = baseData.getDeaths();
+        newActive = baseData.getNewActive();
+        newDeaths = baseData.getNewDeaths();
+        recovered = baseData.getRecovered();
     }
 
     public String getCountry() {
