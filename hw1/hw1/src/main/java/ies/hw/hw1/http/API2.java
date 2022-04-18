@@ -55,6 +55,7 @@ public class API2 extends Thread implements BasicAPI {
         }
         catch (IOException | InterruptedException e) {
             e.printStackTrace();
+            System.out.println("Sussy error");
             return null;
         }
     }
