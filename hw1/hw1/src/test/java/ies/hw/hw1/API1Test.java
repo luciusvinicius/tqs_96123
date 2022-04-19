@@ -67,7 +67,7 @@ public class API1Test {
     private final String SPECIFIC_COUNTRY_WITH_END_DATE = "{\"get\":\"history\",\"parameters\":{\"country\":\"brazil\",\"day\":\"2021-09-02\"},\"errors\":[],\"results\":3,\"response\":[{\"continent\":\"South-America\",\"country\":\"Brazil\",\"population\":214322393,\"cases\":{\"new\":\"+26280\",\"active\":472708,\"critical\":8318,\"recovered\":19775873,\"1M_pop\":\"97192\",\"total\":20830495},\"deaths\":{\"new\":\"+686\",\"1M_pop\":\"2715\",\"total\":581914},\"tests\":{\"1M_pop\":\"265475\",\"total\":56897224},\"day\":\"2021-09-02\",\"time\":\"2021-09-02T23:00:02+00:00\"},{\"continent\":\"South-America\",\"country\":\"Brazil\",\"population\":214322393,\"cases\":{\"new\":\"+26348\",\"active\":447114,\"critical\":8318,\"recovered\":19775873,\"1M_pop\":\"97070\",\"total\":20804215},\"deaths\":{\"new\":\"+703\",\"1M_pop\":\"2712\",\"total\":581228},\"tests\":{\"1M_pop\":\"265475\",\"total\":56897224},\"day\":\"2021-09-02\",\"time\":\"2021-09-02T21:30:03+00:00\"},{\"continent\":\"South-America\",\"country\":\"Brazil\",\"population\":214318271,\"cases\":{\"new\":\"+26348\",\"active\":447114,\"critical\":8318,\"recovered\":19775873,\"1M_pop\":\"97072\",\"total\":20804215},\"deaths\":{\"new\":\"+703\",\"1M_pop\":\"2712\",\"total\":581228},\"tests\":{\"1M_pop\":\"265480\",\"total\":56897224},\"day\":\"2021-09-02\",\"time\":\"2021-09-02T00:00:02+00:00\"}]}";
 
     private WeakConcurrentHashMap<String, JSONObject> cache;
-    private final String NOT_FOUND = "{\"data\":[]}";
+    private final String NOT_FOUND = "{\"get\":\"history\",\"parameters\":{\"country\":\"sussyboy\"},\"errors\":[],\"results\":0,\"response\":[]}";
 
     private JSONMethods jsonMeth = new JSONMethods();
 
@@ -103,31 +103,31 @@ public class API1Test {
         assertThat(data.getDate(), is(LocalDate.parse("2022-04-19")));
     }
 
-    // @Test
-    // void getSpecificCountryWithDate() throws IOException, InterruptedException, ParseException {
-    //     when(client.doRequest(REPORTS_URL + "?region_name=brazil&date=2021-09-30", cache, api.getHost(), api.getKey()))
-    //     .thenReturn(jsonMeth.generateJSONObject(SPECIFIC_COUNTRY_WITH_START_DATE));
+    @Test
+    void getSpecificCountryWithDate() throws IOException, InterruptedException, ParseException {
+        when(client.doRequest(HISTORY_URL + "?country=brazil&day=2021-09-01", cache, api.getHost(), api.getKey()))
+        .thenReturn(jsonMeth.generateJSONObject(SPECIFIC_COUNTRY_WITH_START_DATE));
 
-    //     when(client.doRequest(REPORTS_URL + "?region_name=brazil&date=2021-10-01", cache, api.getHost(), api.getKey()))
-    //     .thenReturn(jsonMeth.generateJSONObject(SPECIFIC_COUNTRY_WITH_END_DATE));
+        when(client.doRequest(HISTORY_URL + "?country=brazil&day=2021-09-02", cache, api.getHost(), api.getKey()))
+        .thenReturn(jsonMeth.generateJSONObject(SPECIFIC_COUNTRY_WITH_END_DATE));
 
-    //     List<DataOutput> response = api.getCountryByRegionAndDate("brazil","2021-09-30","2021-10-01");
+        List<DataOutput> response = api.getCountryByRegionAndDate("brazil","2021-09-01","2021-09-02");
 
-    //     assertThat(response.get(0).getCountry(), is("Brazil"));
-    //     assertThat(response.get(1).getCountry(), is("Brazil"));
-    //     assertThat(response.get(0).getDate(), is(LocalDate.parse("2021-09-30")));
-    //     assertThat(response.get(1).getDate(), is(LocalDate.parse("2021-10-01")));
+        assertThat(response.get(0).getCountry(), is("Brazil"));
+        assertThat(response.get(1).getCountry(), is("Brazil"));
+        assertThat(response.get(0).getDate(), is(LocalDate.parse("2021-09-01")));
+        assertThat(response.get(1).getDate(), is(LocalDate.parse("2021-09-02")));
 
-    // }
+    }
 
-    // @Test
-    // void getSpecificCountryNotFound() throws IOException, InterruptedException, ParseException {
-    //     when(client.doRequest(REPORTS_URL + "?region_name=not_existent", cache, api.getHost(), api.getKey()))
-    //     .thenReturn(jsonMeth.generateJSONObject(NOT_FOUND));
+    @Test
+    void getSpecificCountryNotFound() throws IOException, InterruptedException, ParseException {
+        when(client.doRequest(HISTORY_URL + "?country=not_existent&day=2022-04-19", cache, api.getHost(), api.getKey()))
+        .thenReturn(jsonMeth.generateJSONObject(NOT_FOUND));
 
-    //     List<DataOutput> response = api.getCountryByRegion("not_existent");
+        List<DataOutput> response = api.getCountryByRegionAndDay("not_existent", "2022-04-19");
        
-    //     assertTrue(response.isEmpty());
-    // }
+        assertTrue(response.isEmpty());
+    }
 
 }
