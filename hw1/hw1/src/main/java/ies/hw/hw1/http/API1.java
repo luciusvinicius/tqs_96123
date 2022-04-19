@@ -27,6 +27,14 @@ public class API1 extends Thread implements BasicAPI {
     private final String HEADER_HOST = "covid-193.p.rapidapi.com";
     private final String HEADER_KEY = "3a17131f7emsh4ac69d9c09df18cp1d85e9jsn01ab2bb0f00b";
 
+    public String getHost() {
+        return HEADER_HOST;
+    }
+
+    public String getKey() {
+        return HEADER_KEY;
+    }
+
     private WeakConcurrentHashMap<String, JSONObject> cache = new WeakConcurrentHashMap<>();
 
     private Client client = new Client();
@@ -37,6 +45,10 @@ public class API1 extends Thread implements BasicAPI {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public WeakConcurrentHashMap<String, JSONObject> getConcurrentCash() {
+        return cache;
     }
 
     public Cache getCacheInfo() {
@@ -55,6 +67,19 @@ public class API1 extends Thread implements BasicAPI {
     public List<DataOutput> getCountryByRegion(String country) throws ParseException {
         try {
             JSONObject response = doRequest(HISTORY_URL + "?country=" + country + "&day=" + LocalDate.now().toString());
+            List<DataOutput> response_group = new ArrayList<>();
+            DataOutput data = new DataOutput(response, true);
+            response_group.add(data);
+            return response_group;
+        }
+        catch (IOException | InterruptedException | IndexOutOfBoundsException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<DataOutput> getCountryByRegionAndDay(String country, String day) throws ParseException {
+        try {
+            JSONObject response = doRequest(HISTORY_URL + "?country=" + country + "&day=" + LocalDate.parse(day));
             List<DataOutput> response_group = new ArrayList<>();
             DataOutput data = new DataOutput(response, true);
             response_group.add(data);
