@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -55,8 +56,6 @@ public class API2 extends Thread implements BasicAPI {
             return doRequest(REGIONS_URL);
         }
         catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            System.out.println("Sussy error");
             return null;
         }
     }
@@ -71,11 +70,14 @@ public class API2 extends Thread implements BasicAPI {
             DataOutput data = new DataOutput(response);
             List<DataOutput> response_group = new ArrayList<>();
             response_group.add(data);
+            JSONArray data_json = (JSONArray) response.get("data");
+            if (data_json.isEmpty()) {
+                throw new IndexOutOfBoundsException();
+            }
             return response_group;
         }
-        catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
+        catch (IOException | InterruptedException | IndexOutOfBoundsException e) {
+            return new ArrayList<>();
         }
     }
 
@@ -84,9 +86,8 @@ public class API2 extends Thread implements BasicAPI {
 
             return filterByDateRange(country, startDate, endDate);
         }
-        catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
+        catch (IOException | InterruptedException | IndexOutOfBoundsException e) {
+            return new ArrayList<>();
         }
     }
 

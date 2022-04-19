@@ -134,119 +134,160 @@ public class CovidControllerTest {
         verify(client2, times(1)).getCountryByRegion(country);
     }
 
-    // @Test
-    // void getSpecificCountryAndDateRangeForAPI1() throws Exception {
+    @Test
+    void getSpecificCountryAndDateRangeForAPI1() throws Exception {
 
-    //     String startDay = "2021-09-30";
-    //     String endDay = "2021-10-01";
+        String startDate = "2021-09-30";
+        String endDate = "2021-10-01";
 
-    //     JSONArray specific_country = jsonMeth.generateJSONArray("[{\"response\":[{\"continent\":\"South-America\",\"country\":\"Brazil\",\"cases\":{\"new\":\"+27527\",\"recovered\":20404701,\"total\":21427073,\"critical\":8318,\"active\":425623,\"1M_pop\":\"99922\"},\"tests\":{\"total\":57282520,\"1M_pop\":\"267129\"},\"time\":\"2021-09-30T23:15:03+00:00\",\"day\":\"2021-09-30\",\"deaths\":{\"new\":\"+586\",\"total\":596749,\"1M_pop\":\"2783\"},\"population\":214437809},{\"continent\":\"South-America\",\"country\":\"Brazil\",\"cases\":{\"new\":\"+17756\",\"recovered\":20404701,\"total\":21399546,\"critical\":8318,\"active\":398682,\"1M_pop\":\"99794\"},\"tests\":{\"total\":57282520,\"1M_pop\":\"267129\"},\"time\":\"2021-09-30T21:00:02+00:00\",\"day\":\"2021-09-30\",\"deaths\":{\"new\":\"+643\",\"total\":596163,\"1M_pop\":\"2780\"},\"population\":214437809},{\"continent\":\"South-America\",\"country\":\"Brazil\",\"cases\":{\"new\":\"+17756\",\"recovered\":20404701,\"total\":21399546,\"critical\":8318,\"active\":398682,\"1M_pop\":\"99796\"},\"tests\":{\"total\":57282520,\"1M_pop\":\"267134\"},\"time\":\"2021-09-30T00:00:03+00:00\",\"day\":\"2021-09-30\",\"deaths\":{\"new\":\"+643\",\"total\":596163,\"1M_pop\":\"2780\"},\"population\":214433687}],\"get\":\"history\",\"parameters\":{\"country\":\"brazil\",\"day\":\"2021-09-30\"},\"results\":3,\"errors\":[]},{\"response\":[{\"continent\":\"South-America\",\"country\":\"Brazil\",\"cases\":{\"new\":\"+18578\",\"recovered\":20425139,\"total\":21445651,\"critical\":8318,\"active\":423257,\"1M_pop\":\"100007\"},\"tests\":{\"total\":57282520,\"1M_pop\":\"267124\"},\"time\":\"2021-10-01T23:45:02+00:00\",\"day\":\"2021-10-01\",\"deaths\":{\"new\":\"+455\",\"total\":597255,\"1M_pop\":\"2785\"},\"population\":214441931},{\"continent\":\"South-America\",\"country\":\"Brazil\",\"cases\":{\"new\":\"+27527\",\"recovered\":20425139,\"total\":21427073,\"critical\":8318,\"active\":405134,\"1M_pop\":\"99920\"},\"tests\":{\"total\":57282520,\"1M_pop\":\"267124\"},\"time\":\"2021-10-01T21:00:03+00:00\",\"day\":\"2021-10-01\",\"deaths\":{\"new\":\"+637\",\"total\":596800,\"1M_pop\":\"2783\"},\"population\":214441931},{\"continent\":\"South-America\",\"country\":\"Brazil\",\"cases\":{\"new\":\"+27527\",\"recovered\":20425139,\"total\":21427073,\"critical\":8318,\"active\":405134,\"1M_pop\":\"99922\"},\"tests\":{\"total\":57282520,\"1M_pop\":\"267129\"},\"time\":\"2021-10-01T00:00:03+00:00\",\"day\":\"2021-10-01\",\"deaths\":{\"new\":\"+637\",\"total\":596800,\"1M_pop\":\"2783\"},\"population\":214437809}],\"get\":\"history\",\"parameters\":{\"country\":\"brazil\",\"day\":\"2021-10-01\"},\"results\":3,\"errors\":[]}]");
-    //     String country = "brazil";
+        DataOutput specific_country = new DataOutput();
+        specific_country.setCountry("Brazil");
+        specific_country.setDate(LocalDate.parse(startDate));
+        specific_country.setActive(425623L);
+        specific_country.setDeaths(596749L);
+        specific_country.setNewActive(27527L);
+        specific_country.setNewDeaths(586L);
+        specific_country.setRecovered(20404701L);
 
-    //     when(client1.getCountryByRegionAndDate(country, startDay, endDay)).thenReturn(jsonMeth.jsonArrayToListOfObjects(specific_country));
+        DataOutput specific_country2 = new DataOutput();
+        specific_country2.setCountry("Brazil");
+        specific_country2.setDate(LocalDate.parse(endDate));
+        specific_country2.setActive(423257L);
+        specific_country2.setDeaths(597255L);
+        specific_country2.setNewActive(18578L);
+        specific_country2.setNewDeaths(455L);
+        specific_country2.setRecovered(20425139L);
 
-    //     mvc.perform(
-    //         get("/api1/countries/brazil?startDay=" + startDay + "&endDay=" + endDay )
-    //     )
-    //     .andExpect(status().isOk())
-    //     .andExpect(jsonPath("$", hasSize(2)))
-    //     .andExpect(jsonPath("$[0].response[0].country", is("Brazil")))
-    //     .andExpect(jsonPath("$[1].response[0].country", is("Brazil")));
+        String country = "brazil";
 
-    //     verify(client1, times(1)).getCountryByRegionAndDate(country, startDay, endDay);
-    // }
+        List<DataOutput> lst = new ArrayList<>();
+        lst.add(specific_country);
+        lst.add(specific_country2);
 
-    // @Test
-    // void getSpecificCountryAndDateRangeForAPI2() throws Exception {
+        when(client1.getCountryByRegionAndDate(country, startDate, endDate)).thenReturn(lst);
 
-    //     String startDay = "2021-09-30";
-    //     String endDay = "2021-10-01";
+        mvc.perform(
+            get("/api1/countries/brazil?startDay=2021-09-30&endDay=2021-10-01")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].country", is("Brazil")))
+        .andExpect(jsonPath("$[0].date", is("2021-09-30")))
+        .andExpect(jsonPath("$[1].country", is("Brazil")))
+        .andExpect(jsonPath("$[1].date", is("2021-10-01")));
 
-    //     JSONArray specific_country = jsonMeth.generateJSONArray("[{\"data\":[{\"date\":\"2021-09-30\",\"confirmed_diff\":1,\"active_diff\":0,\"deaths_diff\":1,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0209,\"last_update\":\"2021-10-01 04:21:35\",\"active\":86086,\"region\":{\"iso\":\"BRA\",\"province\":\"Acre\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-9.0238\",\"long\":\"-70.812\"},\"confirmed\":87924,\"deaths\":1838},{\"date\":\"2021-09-30\",\"confirmed_diff\":93,\"active_diff\":89,\"deaths_diff\":4,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0261,\"last_update\":\"2021-10-01 04:21:35\",\"active\":231997,\"region\":{\"iso\":\"BRA\",\"province\":\"Alagoas\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-9.5713\",\"long\":\"-36.782\"},\"confirmed\":238210,\"deaths\":6213},{\"date\":\"2021-09-30\",\"confirmed_diff\":22,\"active_diff\":19,\"deaths_diff\":3,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0161,\"last_update\":\"2021-10-01 04:21:35\",\"active\":120855,\"region\":{\"iso\":\"BRA\",\"province\":\"Amapa\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"0.902\",\"long\":\"-52.003\"},\"confirmed\":122836,\"deaths\":1981},{\"date\":\"2021-09-30\",\"confirmed_diff\":41,\"active_diff\":41,\"deaths_diff\":0,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0322,\"last_update\":\"2021-10-01 04:21:35\",\"active\":412753,\"region\":{\"iso\":\"BRA\",\"province\":\"Amazonas\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-3.4168\",\"long\":\"-65.8561\"},\"confirmed\":426476,\"deaths\":13723},{\"date\":\"2021-09-30\",\"confirmed_diff\":555,\"active_diff\":547,\"deaths_diff\":8,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0218,\"last_update\":\"2021-10-01 04:21:35\",\"active\":1206940,\"region\":{\"iso\":\"BRA\",\"province\":\"Bahia\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-12.5797\",\"long\":\"-41.7007\"},\"confirmed\":1233799,\"deaths\":26859},{\"date\":\"2021-09-30\",\"confirmed_diff\":10647,\"active_diff\":10636,\"deaths_diff\":11,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0258,\"last_update\":\"2021-10-01 04:21:35\",\"active\":916242,\"region\":{\"iso\":\"BRA\",\"province\":\"Ceara\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-5.4984\",\"long\":\"-39.3206\"},\"confirmed\":940463,\"deaths\":24221},{\"date\":\"2021-09-30\",\"confirmed_diff\":950,\"active_diff\":940,\"deaths_diff\":10,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0211,\"last_update\":\"2021-10-01 04:21:35\",\"active\":484785,\"region\":{\"iso\":\"BRA\",\"province\":\"Distrito Federal\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-15.7998\",\"long\":\"-47.8645\"},\"confirmed\":495249,\"deaths\":10464},{\"date\":\"2021-09-30\",\"confirmed_diff\":956,\"active_diff\":945,\"deaths_diff\":11,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0214,\"last_update\":\"2021-10-01 04:21:35\",\"active\":573481,\"region\":{\"iso\":\"BRA\",\"province\":\"Espirito Santo\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-19.1834\",\"long\":\"-40.3089\"},\"confirmed\":586039,\"deaths\":12558},{\"date\":\"2021-09-30\",\"confirmed_diff\":1662,\"active_diff\":1626,\"deaths_diff\":36,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0272,\"last_update\":\"2021-10-01 04:21:35\",\"active\":840125,\"region\":{\"iso\":\"BRA\",\"province\":\"Goias\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-15.827\",\"long\":\"-49.8362\"},\"confirmed\":863618,\"deaths\":23493},{\"date\":\"2021-09-30\",\"confirmed_diff\":354,\"active_diff\":349,\"deaths_diff\":5,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0286,\"last_update\":\"2021-10-01 04:21:35\",\"active\":346062,\"region\":{\"iso\":\"BRA\",\"province\":\"Maranhao\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-4.9609\",\"long\":\"-45.2744\"},\"confirmed\":356236,\"deaths\":10174},{\"date\":\"2021-09-30\",\"confirmed_diff\":427,\"active_diff\":421,\"deaths_diff\":6,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0254,\"last_update\":\"2021-10-01 04:21:35\",\"active\":520328,\"region\":{\"iso\":\"BRA\",\"province\":\"Mato Grosso\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-12.6819\",\"long\":\"-56.9211\"},\"confirmed\":533891,\"deaths\":13563},{\"date\":\"2021-09-30\",\"confirmed_diff\":104,\"active_diff\":100,\"deaths_diff\":4,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0256,\"last_update\":\"2021-10-01 04:21:35\",\"active\":363362,\"region\":{\"iso\":\"BRA\",\"province\":\"Mato Grosso do Sul\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-20.7722\",\"long\":\"-54.7852\"},\"confirmed\":372917,\"deaths\":9555},{\"date\":\"2021-09-30\",\"confirmed_diff\":2414,\"active_diff\":2333,\"deaths_diff\":81,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0255,\"last_update\":\"2021-10-01 04:21:35\",\"active\":2085831,\"region\":{\"iso\":\"BRA\",\"province\":\"Minas Gerais\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-18.5122\",\"long\":\"-44.555\"},\"confirmed\":2140378,\"deaths\":54547},{\"date\":\"2021-09-30\",\"confirmed_diff\":297,\"active_diff\":292,\"deaths_diff\":5,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0282,\"last_update\":\"2021-10-01 04:21:35\",\"active\":574660,\"region\":{\"iso\":\"BRA\",\"province\":\"Para\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-1.9981\",\"long\":\"-54.9306\"},\"confirmed\":591318,\"deaths\":16658},{\"date\":\"2021-09-30\",\"confirmed_diff\":216,\"active_diff\":213,\"deaths_diff\":3,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0211,\"last_update\":\"2021-10-01 04:21:35\",\"active\":432363,\"region\":{\"iso\":\"BRA\",\"province\":\"Paraiba\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-7.24\",\"long\":\"-36.782\"},\"confirmed\":441674,\"deaths\":9311},{\"date\":\"2021-09-30\",\"confirmed_diff\":1807,\"active_diff\":1752,\"deaths_diff\":55,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0259,\"last_update\":\"2021-10-01 04:21:35\",\"active\":1472413,\"region\":{\"iso\":\"BRA\",\"province\":\"Parana\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-25.2521\",\"long\":\"-52.0215\"},\"confirmed\":1511509,\"deaths\":39096},{\"date\":\"2021-09-30\",\"confirmed_diff\":549,\"active_diff\":533,\"deaths_diff\":16,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0318,\"last_update\":\"2021-10-01 04:21:35\",\"active\":600983,\"region\":{\"iso\":\"BRA\",\"province\":\"Pernambuco\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-8.8137\",\"long\":\"-36.9541\"},\"confirmed\":620723,\"deaths\":19740},{\"date\":\"2021-09-30\",\"confirmed_diff\":52,\"active_diff\":48,\"deaths_diff\":4,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.022,\"last_update\":\"2021-10-01 04:21:35\",\"active\":312323,\"region\":{\"iso\":\"BRA\",\"province\":\"Piaui\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-7.7183\",\"long\":\"-42.7289\"},\"confirmed\":319334,\"deaths\":7011},{\"date\":\"2021-09-30\",\"confirmed_diff\":119,\"active_diff\":118,\"deaths_diff\":1,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0199,\"last_update\":\"2021-10-01 04:21:35\",\"active\":361282,\"region\":{\"iso\":\"BRA\",\"province\":\"Rio Grande do Norte\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-5.4026\",\"long\":\"-36.9541\"},\"confirmed\":368619,\"deaths\":7337},{\"date\":\"2021-09-30\",\"confirmed_diff\":1033,\"active_diff\":1000,\"deaths_diff\":33,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0243,\"last_update\":\"2021-10-01 04:21:35\",\"active\":1402102,\"region\":{\"iso\":\"BRA\",\"province\":\"Rio Grande do Sul\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-30.0346\",\"long\":\"-51.2177\"},\"confirmed\":1436962,\"deaths\":34860},{\"date\":\"2021-09-30\",\"confirmed_diff\":2277,\"active_diff\":2158,\"deaths_diff\":119,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0514,\"last_update\":\"2021-10-01 04:21:35\",\"active\":1219597,\"region\":{\"iso\":\"BRA\",\"province\":\"Rio de Janeiro\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-22.9068\",\"long\":\"-43.1729\"},\"confirmed\":1285731,\"deaths\":66134},{\"date\":\"2021-09-30\",\"confirmed_diff\":48,\"active_diff\":44,\"deaths_diff\":4,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0246,\"last_update\":\"2021-10-01 04:21:35\",\"active\":259350,\"region\":{\"iso\":\"BRA\",\"province\":\"Rondonia\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-11.5057\",\"long\":\"-63.5806\"},\"confirmed\":265879,\"deaths\":6529},{\"date\":\"2021-09-30\",\"confirmed_diff\":13,\"active_diff\":10,\"deaths_diff\":3,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0159,\"last_update\":\"2021-10-01 04:21:35\",\"active\":124211,\"region\":{\"iso\":\"BRA\",\"province\":\"Roraima\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-2.7376\",\"long\":\"-62.0751\"},\"confirmed\":126212,\"deaths\":2001},{\"date\":\"2021-09-30\",\"confirmed_diff\":1121,\"active_diff\":1110,\"deaths_diff\":11,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0162,\"last_update\":\"2021-10-01 04:21:35\",\"active\":1173145,\"region\":{\"iso\":\"BRA\",\"province\":\"Santa Catarina\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-27.2423\",\"long\":\"-50.2189\"},\"confirmed\":1192421,\"deaths\":19276},{\"date\":\"2021-09-30\",\"confirmed_diff\":1550,\"active_diff\":1361,\"deaths_diff\":189,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0343,\"last_update\":\"2021-10-01 04:21:35\",\"active\":4216322,\"region\":{\"iso\":\"BRA\",\"province\":\"Sao Paulo\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-23.5505\",\"long\":\"-46.6333\"},\"confirmed\":4366132,\"deaths\":149810},{\"date\":\"2021-09-30\",\"confirmed_diff\":24,\"active_diff\":23,\"deaths_diff\":1,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0216,\"last_update\":\"2021-10-01 04:21:35\",\"active\":272094,\"region\":{\"iso\":\"BRA\",\"province\":\"Sergipe\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-10.5741\",\"long\":\"-37.3857\"},\"confirmed\":278104,\"deaths\":6010},{\"date\":\"2021-09-30\",\"confirmed_diff\":195,\"active_diff\":192,\"deaths_diff\":3,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0169,\"last_update\":\"2021-10-01 04:21:35\",\"active\":220632,\"region\":{\"iso\":\"BRA\",\"province\":\"Tocantins\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-10.1753\",\"long\":\"-48.2982\"},\"confirmed\":224419,\"deaths\":3787}]},{\"data\":[{\"date\":\"2021-10-01\",\"confirmed_diff\":1,\"active_diff\":1,\"deaths_diff\":0,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0209,\"last_update\":\"2021-10-02 04:21:25\",\"active\":86087,\"region\":{\"iso\":\"BRA\",\"province\":\"Acre\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-9.0238\",\"long\":\"-70.812\"},\"confirmed\":87925,\"deaths\":1838},{\"date\":\"2021-10-01\",\"confirmed_diff\":39,\"active_diff\":35,\"deaths_diff\":4,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0261,\"last_update\":\"2021-10-02 04:21:25\",\"active\":232032,\"region\":{\"iso\":\"BRA\",\"province\":\"Alagoas\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-9.5713\",\"long\":\"-36.782\"},\"confirmed\":238249,\"deaths\":6217},{\"date\":\"2021-10-01\",\"confirmed_diff\":22,\"active_diff\":19,\"deaths_diff\":3,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0161,\"last_update\":\"2021-10-02 04:21:25\",\"active\":120874,\"region\":{\"iso\":\"BRA\",\"province\":\"Amapa\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"0.902\",\"long\":\"-52.003\"},\"confirmed\":122858,\"deaths\":1984},{\"date\":\"2021-10-01\",\"confirmed_diff\":51,\"active_diff\":50,\"deaths_diff\":1,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0322,\"last_update\":\"2021-10-02 04:21:25\",\"active\":412803,\"region\":{\"iso\":\"BRA\",\"province\":\"Amazonas\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-3.4168\",\"long\":\"-65.8561\"},\"confirmed\":426527,\"deaths\":13724},{\"date\":\"2021-10-01\",\"confirmed_diff\":571,\"active_diff\":564,\"deaths_diff\":7,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0218,\"last_update\":\"2021-10-02 04:21:25\",\"active\":1207504,\"region\":{\"iso\":\"BRA\",\"province\":\"Bahia\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-12.5797\",\"long\":\"-41.7007\"},\"confirmed\":1234370,\"deaths\":26866},{\"date\":\"2021-10-01\",\"confirmed_diff\":293,\"active_diff\":281,\"deaths_diff\":12,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0258,\"last_update\":\"2021-10-02 04:21:25\",\"active\":916523,\"region\":{\"iso\":\"BRA\",\"province\":\"Ceara\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-5.4984\",\"long\":\"-39.3206\"},\"confirmed\":940756,\"deaths\":24233},{\"date\":\"2021-10-01\",\"confirmed_diff\":937,\"active_diff\":921,\"deaths_diff\":16,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0211,\"last_update\":\"2021-10-02 04:21:25\",\"active\":485706,\"region\":{\"iso\":\"BRA\",\"province\":\"Distrito Federal\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-15.7998\",\"long\":\"-47.8645\"},\"confirmed\":496186,\"deaths\":10480},{\"date\":\"2021-10-01\",\"confirmed_diff\":963,\"active_diff\":960,\"deaths_diff\":3,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0214,\"last_update\":\"2021-10-02 04:21:25\",\"active\":574441,\"region\":{\"iso\":\"BRA\",\"province\":\"Espirito Santo\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-19.1834\",\"long\":\"-40.3089\"},\"confirmed\":587002,\"deaths\":12561},{\"date\":\"2021-10-01\",\"confirmed_diff\":1541,\"active_diff\":1501,\"deaths_diff\":40,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0272,\"last_update\":\"2021-10-02 04:21:25\",\"active\":841626,\"region\":{\"iso\":\"BRA\",\"province\":\"Goias\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-15.827\",\"long\":\"-49.8362\"},\"confirmed\":865159,\"deaths\":23533},{\"date\":\"2021-10-01\",\"confirmed_diff\":326,\"active_diff\":323,\"deaths_diff\":3,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0285,\"last_update\":\"2021-10-02 04:21:25\",\"active\":346385,\"region\":{\"iso\":\"BRA\",\"province\":\"Maranhao\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-4.9609\",\"long\":\"-45.2744\"},\"confirmed\":356562,\"deaths\":10177},{\"date\":\"2021-10-01\",\"confirmed_diff\":445,\"active_diff\":440,\"deaths_diff\":5,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0254,\"last_update\":\"2021-10-02 04:21:25\",\"active\":520768,\"region\":{\"iso\":\"BRA\",\"province\":\"Mato Grosso\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-12.6819\",\"long\":\"-56.9211\"},\"confirmed\":534336,\"deaths\":13568},{\"date\":\"2021-10-01\",\"confirmed_diff\":167,\"active_diff\":158,\"deaths_diff\":9,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0256,\"last_update\":\"2021-10-02 04:21:25\",\"active\":363520,\"region\":{\"iso\":\"BRA\",\"province\":\"Mato Grosso do Sul\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-20.7722\",\"long\":\"-54.7852\"},\"confirmed\":373084,\"deaths\":9564},{\"date\":\"2021-10-01\",\"confirmed_diff\":2856,\"active_diff\":2790,\"deaths_diff\":66,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0255,\"last_update\":\"2021-10-02 04:21:25\",\"active\":2088621,\"region\":{\"iso\":\"BRA\",\"province\":\"Minas Gerais\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-18.5122\",\"long\":\"-44.555\"},\"confirmed\":2143234,\"deaths\":54613},{\"date\":\"2021-10-01\",\"confirmed_diff\":256,\"active_diff\":254,\"deaths_diff\":2,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0282,\"last_update\":\"2021-10-02 04:21:25\",\"active\":574914,\"region\":{\"iso\":\"BRA\",\"province\":\"Para\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-1.9981\",\"long\":\"-54.9306\"},\"confirmed\":591574,\"deaths\":16660},{\"date\":\"2021-10-01\",\"confirmed_diff\":163,\"active_diff\":162,\"deaths_diff\":1,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0211,\"last_update\":\"2021-10-02 04:21:25\",\"active\":432525,\"region\":{\"iso\":\"BRA\",\"province\":\"Paraiba\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-7.24\",\"long\":\"-36.782\"},\"confirmed\":441837,\"deaths\":9312},{\"date\":\"2021-10-01\",\"confirmed_diff\":1792,\"active_diff\":1779,\"deaths_diff\":13,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0258,\"last_update\":\"2021-10-02 04:21:25\",\"active\":1474192,\"region\":{\"iso\":\"BRA\",\"province\":\"Parana\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-25.2521\",\"long\":\"-52.0215\"},\"confirmed\":1513301,\"deaths\":39109},{\"date\":\"2021-10-01\",\"confirmed_diff\":469,\"active_diff\":462,\"deaths_diff\":7,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0318,\"last_update\":\"2021-10-02 04:21:25\",\"active\":601445,\"region\":{\"iso\":\"BRA\",\"province\":\"Pernambuco\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-8.8137\",\"long\":\"-36.9541\"},\"confirmed\":621192,\"deaths\":19747},{\"date\":\"2021-10-01\",\"confirmed_diff\":76,\"active_diff\":75,\"deaths_diff\":1,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.022,\"last_update\":\"2021-10-02 04:21:25\",\"active\":312398,\"region\":{\"iso\":\"BRA\",\"province\":\"Piaui\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-7.7183\",\"long\":\"-42.7289\"},\"confirmed\":319410,\"deaths\":7012},{\"date\":\"2021-10-01\",\"confirmed_diff\":97,\"active_diff\":94,\"deaths_diff\":3,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0199,\"last_update\":\"2021-10-02 04:21:25\",\"active\":361376,\"region\":{\"iso\":\"BRA\",\"province\":\"Rio Grande do Norte\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-5.4026\",\"long\":\"-36.9541\"},\"confirmed\":368716,\"deaths\":7340},{\"date\":\"2021-10-01\",\"confirmed_diff\":1916,\"active_diff\":1895,\"deaths_diff\":21,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0242,\"last_update\":\"2021-10-02 04:21:25\",\"active\":1403997,\"region\":{\"iso\":\"BRA\",\"province\":\"Rio Grande do Sul\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-30.0346\",\"long\":\"-51.2177\"},\"confirmed\":1438878,\"deaths\":34881},{\"date\":\"2021-10-01\",\"confirmed_diff\":2745,\"active_diff\":2618,\"deaths_diff\":127,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0514,\"last_update\":\"2021-10-02 04:21:25\",\"active\":1222215,\"region\":{\"iso\":\"BRA\",\"province\":\"Rio de Janeiro\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-22.9068\",\"long\":\"-43.1729\"},\"confirmed\":1288476,\"deaths\":66261},{\"date\":\"2021-10-01\",\"confirmed_diff\":0,\"active_diff\":0,\"deaths_diff\":0,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0246,\"last_update\":\"2021-10-02 04:21:25\",\"active\":259350,\"region\":{\"iso\":\"BRA\",\"province\":\"Rondonia\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-11.5057\",\"long\":\"-63.5806\"},\"confirmed\":265879,\"deaths\":6529},{\"date\":\"2021-10-01\",\"confirmed_diff\":8,\"active_diff\":8,\"deaths_diff\":0,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0159,\"last_update\":\"2021-10-02 04:21:25\",\"active\":124219,\"region\":{\"iso\":\"BRA\",\"province\":\"Roraima\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-2.7376\",\"long\":\"-62.0751\"},\"confirmed\":126220,\"deaths\":2001},{\"date\":\"2021-10-01\",\"confirmed_diff\":960,\"active_diff\":945,\"deaths_diff\":15,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0162,\"last_update\":\"2021-10-02 04:21:25\",\"active\":1174090,\"region\":{\"iso\":\"BRA\",\"province\":\"Santa Catarina\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-27.2423\",\"long\":\"-50.2189\"},\"confirmed\":1193381,\"deaths\":19291},{\"date\":\"2021-10-01\",\"confirmed_diff\":1616,\"active_diff\":1473,\"deaths_diff\":143,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0343,\"last_update\":\"2021-10-02 04:21:25\",\"active\":4217795,\"region\":{\"iso\":\"BRA\",\"province\":\"Sao Paulo\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-23.5505\",\"long\":\"-46.6333\"},\"confirmed\":4367748,\"deaths\":149953},{\"date\":\"2021-10-01\",\"confirmed_diff\":30,\"active_diff\":30,\"deaths_diff\":0,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0216,\"last_update\":\"2021-10-02 04:21:25\",\"active\":272124,\"region\":{\"iso\":\"BRA\",\"province\":\"Sergipe\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-10.5741\",\"long\":\"-37.3857\"},\"confirmed\":278134,\"deaths\":6010},{\"date\":\"2021-10-01\",\"confirmed_diff\":238,\"active_diff\":234,\"deaths_diff\":4,\"recovered\":0,\"recovered_diff\":0,\"fatality_rate\":0.0169,\"last_update\":\"2021-10-02 04:21:25\",\"active\":220866,\"region\":{\"iso\":\"BRA\",\"province\":\"Tocantins\",\"cities\":[],\"name\":\"Brazil\",\"lat\":\"-10.1753\",\"long\":\"-48.2982\"},\"confirmed\":224657,\"deaths\":3791}]}]");
-    //     String country = "brazil";
+        verify(client1, times(1)).getCountryByRegionAndDate(country, startDate, endDate);
+    }
 
-    //     when(client2.getCountryByRegionAndDate(country, startDay, endDay)).thenReturn(jsonMeth.jsonArrayToListOfObjects(specific_country));
+    @Test
+    void getSpecificCountryAndDateRangeForAPI2() throws Exception {
 
-    //     mvc.perform(
-    //         get("/api2/countries/brazil?startDay=" + startDay + "&endDay=" + endDay )
-    //     )
-    //     .andExpect(status().isOk())
-    //     .andExpect(jsonPath("$", hasSize(2)))
-    //     .andExpect(jsonPath("$[0].data[0].date", is("2021-09-30")))
-    //     .andExpect(jsonPath("$[0].data[0].region.name", is("Brazil")))
-    //     .andExpect(jsonPath("$[1].data[0].date", is("2021-10-01")))
-    //     .andExpect(jsonPath("$[1].data[0].region.name", is("Brazil")));
+        String startDate = "2021-09-30";
+        String endDate = "2021-10-01";
 
-    //     verify(client2, times(1)).getCountryByRegionAndDate(country, startDay, endDay);
-    // }
+        DataOutput specific_country = new DataOutput();
+        specific_country.setCountry("Brazil");
+        specific_country.setDate(LocalDate.parse(startDate));
+        specific_country.setActive(425623L);
+        specific_country.setDeaths(596749L);
+        specific_country.setNewActive(27527L);
+        specific_country.setNewDeaths(586L);
+        specific_country.setRecovered(20404701L);
 
-    // @Test
-    // void getSpecificCountryNotFoundForAPI1() throws Exception {
+        DataOutput specific_country2 = new DataOutput();
+        specific_country2.setCountry("Brazil");
+        specific_country2.setDate(LocalDate.parse(endDate));
+        specific_country2.setActive(423257L);
+        specific_country2.setDeaths(597255L);
+        specific_country2.setNewActive(18578L);
+        specific_country2.setNewDeaths(455L);
+        specific_country2.setRecovered(20425139L);
 
-    //     JSONArray country_not_found = jsonMeth.generateJSONArray("[{\"get\":\"history\",\"parameters\":{\"country\":\"not_existent\"},\"errors\":[],\"results\":0,\"response\":[]}]");
-    //     String country = "not_existent";
+        String country = "brazil";
 
-    //     when(client1.getCountryByRegion(country)).thenReturn(jsonMeth.jsonArrayToListOfObjects(country_not_found));
+        List<DataOutput> lst = new ArrayList<>();
+        lst.add(specific_country);
+        lst.add(specific_country2);
 
-    //     mvc.perform(
-    //         get("/api1/countries/not_existent")
-    //     )
-    //     .andExpect(jsonPath("$[0].results", is(0)));
+        when(client2.getCountryByRegionAndDate(country, startDate, endDate)).thenReturn(lst);
 
-    //     verify(client1, times(1)).getCountryByRegion(country);
-    // }
+        mvc.perform(
+            get("/api2/countries/brazil?startDay=2021-09-30&endDay=2021-10-01")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].country", is("Brazil")))
+        .andExpect(jsonPath("$[0].date", is("2021-09-30")))
+        .andExpect(jsonPath("$[1].country", is("Brazil")))
+        .andExpect(jsonPath("$[1].date", is("2021-10-01")));
 
-    // @Test
-    // void getSpecificCountryNotFoundForAPI2() throws Exception {
+        verify(client2, times(1)).getCountryByRegionAndDate(country, startDate, endDate);
+    }
 
-    //     JSONArray country_not_found = jsonMeth.generateJSONArray("[{\"data\":[]}]");
-    //     String country = "not_existent";
 
-    //     when(client2.getCountryByRegion(country)).thenReturn(jsonMeth.jsonArrayToListOfObjects(country_not_found));
+    @Test
+    void getSpecificCountryNotFoundForAPI1() throws Exception {
 
-    //     mvc.perform(
-    //         get("/api2/countries/not_existent")
-    //     )
-    //     .andExpect(jsonPath("$[0].data", is(empty())));
+        String country = "not_existent";
 
-    //     verify(client2, times(1)).getCountryByRegion(country);
-    // }
+        when(client1.getCountryByRegion(country)).thenReturn(new ArrayList<>());
 
-    // @Test
-    // void getCacheUsageForAPI1() throws Exception {
+        mvc.perform(
+            get("/api1/countries/not_existent")
+        )
+        .andExpect(jsonPath("$", hasSize(0)));
 
-    //     Cache cache_usage = new Cache(2, 1, 1000000);
+        verify(client1, times(1)).getCountryByRegion(country);
+    }
 
-    //     when(client1.getCacheInfo()).thenReturn(cache_usage);
+    @Test
+    void getSpecificCountryNotFoundForAPI2() throws Exception {
 
-    //     mvc.perform(
-    //         get("/api1/cache/usage")
-    //     )
-    //     .andExpect(status().isOk())
-    //     .andExpect(jsonPath("$.numberOfHits", is(2)))
-    //     .andExpect(jsonPath("$.numberOfMisses", is(1)))
-    //     .andExpect(jsonPath("$.numberOfRequests", is(3)));
-    //     // "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
+        String country = "not_existent";
 
-    //     verify(client1, times(1)).getCacheInfo();
-    // }
+        when(client2.getCountryByRegion(country)).thenReturn(new ArrayList<>());
 
-    // @Test
-    // void getCacheUsageForAPI2() throws Exception {
+        mvc.perform(
+            get("/api2/countries/not_existent")
+        )
+        .andExpect(jsonPath("$", hasSize(0)));
 
-    //     Cache cache_usage = new Cache(2, 1, 1000000);
+        verify(client2, times(1)).getCountryByRegion(country);
+    }
 
-    //     when(client2.getCacheInfo()).thenReturn(cache_usage);
+    @Test
+    void getCacheUsageForAPI1() throws Exception {
 
-    //     mvc.perform(
-    //         get("/api2/cache/usage")
-    //     )
-    //     .andExpect(status().isOk())
-    //     .andExpect(jsonPath("$.numberOfHits", is(2)))
-    //     .andExpect(jsonPath("$.numberOfMisses", is(1)))
-    //     .andExpect(jsonPath("$.numberOfRequests", is(3)));
-    //     // "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
+        Cache cache_usage = new Cache(2, 1, 1000000);
 
-    //     verify(client2, times(1)).getCacheInfo();
-    // }
+        when(client1.getCacheInfo()).thenReturn(cache_usage);
+
+        mvc.perform(
+            get("/api1/cache/usage")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.numberOfHits", is(2)))
+        .andExpect(jsonPath("$.numberOfMisses", is(1)))
+        .andExpect(jsonPath("$.numberOfRequests", is(3)));
+        // "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
+
+        verify(client1, times(1)).getCacheInfo();
+    }
+
+    @Test
+    void getCacheUsageForAPI2() throws Exception {
+
+        Cache cache_usage = new Cache(2, 1, 1000000);
+
+        when(client2.getCacheInfo()).thenReturn(cache_usage);
+
+        mvc.perform(
+            get("/api2/cache/usage")
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.numberOfHits", is(2)))
+        .andExpect(jsonPath("$.numberOfMisses", is(1)))
+        .andExpect(jsonPath("$.numberOfRequests", is(3)));
+        // "{\"numberOfHits\":2,\"numberOfMisses\":1,\"ttl\":1000000,\"numberOfRequests\":3}",
+
+        verify(client2, times(1)).getCacheInfo();
+    }
 }

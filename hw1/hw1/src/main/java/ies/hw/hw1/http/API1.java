@@ -48,7 +48,6 @@ public class API1 extends Thread implements BasicAPI {
             return doRequest(COUNTRIES_URL);
         }
         catch (IOException | InterruptedException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -61,9 +60,8 @@ public class API1 extends Thread implements BasicAPI {
             response_group.add(data);
             return response_group;
         }
-        catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
+        catch (IOException | InterruptedException | IndexOutOfBoundsException e) {
+            return new ArrayList<>();
         }
     }
 
@@ -71,9 +69,8 @@ public class API1 extends Thread implements BasicAPI {
         try {
             return filterByDateRange(country, startDate, endDate);
         }
-        catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
+        catch (IOException | InterruptedException | IndexOutOfBoundsException e) {
+            return new ArrayList<>();
         }
     }
 
