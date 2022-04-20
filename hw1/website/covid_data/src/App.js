@@ -1,96 +1,41 @@
 import './App.css';
-import { Autocomplete, CircularProgress, TextField } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { useEffect, useState } from 'react';
-import DataShown from './DataShown';
-
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Inputs from './components/Inputs';
 
 
-const apiURL = "http://localhost:8080"
 
 function App() {
 
-  const [countries, setCountries] = useState([])
-  const [countryName, setCountryName] = useState("")
-  const [data, setData] = useState({})
-  const [isFullLoaded, setIsFullLoaded] = useState(false)
-  const [dateVal, setDateVal] = useState(new Date())
+  const [api, setApi] = useState("api1")
 
-  const createRequest = (uri, setFunc, changeLoad=false) => {
-    fetch(uri, {
-      headers:{
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-          // // "Origin":"frontend:3000"
-      }
-    })
-
-    .then(response => response.json())
-    .then(response => {
-      console.log("response", response)
-      setFunc(response.response)
-      if (changeLoad) {
-        setIsFullLoaded(true)
-      }
-    })
-    .catch(error => {
-      console.log("sussy error", error)
-    })
-  }
-
-  useEffect(() => {
-    createRequest(`${apiURL}/countries`, setCountries, true)
-  }, [])
-
-  useEffect(() => {
-    // console.log("date", dateVal.toISOString().substring(0, 10))
-    if (countryName == "") return
-    setData({isLoading: true})
-    createRequest(`${apiURL}/countries/${countryName}?day=${dateVal.toISOString().substring(0, 10)}`, setData)
-
-  }, [countryName, dateVal])
-
+  useEffect(() => console.log("new api", api), [api])
 
 
   return (
     <div className="App">
-      <div className='centerContainer'>
-        <h1>Covid Data</h1>
-      </div>
-      {!isFullLoaded 
-      ?
-        <div className='centerContainer'>
-          <CircularProgress />  
-        </div>
-      :
-      <div className='customContainer'>
+      <FormControl>
+        <FormLabel id="demo-row-radio-buttons-group-label">Choose API</FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+          value={api}
+          onChange={(e) => setApi(e.target.value)}
+        >
+          <FormControlLabel value="api1" control={<Radio />} label="API 1" />
+          <FormControlLabel value="api2" control={<Radio />} label="API 2" />
+        </RadioGroup>
+      </FormControl>
 
-        <Autocomplete
-          options={countries}
-          onChange={(_, val) => setCountryName(val)}
-          renderInput={(params) => <TextField {...params} label="Country"/>}
-        />
+      <Inputs
+        api={api}
+      />
 
-        <br />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="Date"
-            inputFormat='dd/MM/yyyy'
-            value={dateVal}
-            onChange={(newValue) => {
-              setDateVal(newValue)
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        
-
-        {Object.keys(data).length !== 0 && <DataShown totalData={data}/>}
-      </div>
-      }
     </div>
   );
 }
