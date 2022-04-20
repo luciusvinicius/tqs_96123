@@ -18,11 +18,14 @@ const Inputs = ({api}) => {
     const [startDateVal, setStartDateVal] = useState(new Date())
     const [endDateVal, setEndDateVal] = useState(new Date())
     const [countriesIsLoading, setCountriesIsLoading] = useState(true)
+    const [hasSelCountry, setHasSelCountry] = useState(false)
 
   
     const createApiRequest = (uri, setFunc) => {
 
         setIsFullLoaded(false)
+        setData([])
+        setHasSelCountry(false)
 
         fetch(uri, {
             headers:{
@@ -51,6 +54,8 @@ const Inputs = ({api}) => {
     }
 
     const createCountryRequest = (uri, setFunc) => {
+        setCountriesIsLoading(true)
+        setHasSelCountry(true)
 
         fetch(uri, {
             headers:{
@@ -65,7 +70,7 @@ const Inputs = ({api}) => {
             return response.json()
         } )
         .then(response => {
-            // console.log(`response for ${uri}`, response)
+            console.log(`response for ${uri}`, response)
             setFunc(response)
             setCountriesIsLoading(false)
 
@@ -82,7 +87,6 @@ const Inputs = ({api}) => {
     useEffect(() => {
       // console.log("date", dateVal.toISOString().substring(0, 10))
       if (countryName == "") return
-      setCountriesIsLoading(true)
       createCountryRequest(`${BASE_URL}/${api}/countries/${countryName}?startDay=${startDateVal.toISOString().substring(0, 10)}&endDay=${endDateVal.toISOString().substring(0, 10)}`, setData)
   
     }, [countryName, startDateVal])
@@ -135,9 +139,7 @@ const Inputs = ({api}) => {
 
                 <Alert severity="warning">Doing a request for a good amount of days may take a while to have a response!</Alert>
 
-                
-
-                {data.length != 0 && <DataShown data={data} isLoading={countriesIsLoading}/>}
+                {hasSelCountry && <DataShown data={data} isLoading={countriesIsLoading}/>}
             </div>
         }
     </>
