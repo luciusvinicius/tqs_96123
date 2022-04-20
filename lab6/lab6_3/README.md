@@ -12,4 +12,4 @@ Já no teste do service, acabou ocorrendo um assert em que nada acontecia realme
 
 ![image](./Screenshot2.png)
 
-b)
+d) Existem 7 linhas que não foram visualizadas.
