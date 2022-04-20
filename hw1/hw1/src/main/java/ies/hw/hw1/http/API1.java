@@ -77,19 +77,6 @@ public class API1 extends Thread implements BasicAPI {
         }
     }
 
-    public List<DataOutput> getCountryByRegionAndDay(String country, String day) throws ParseException {
-        try {
-            JSONObject response = doRequest(HISTORY_URL + "?country=" + country + "&day=" + LocalDate.parse(day));
-            List<DataOutput> response_group = new ArrayList<>();
-            DataOutput data = new DataOutput(response, true);
-            response_group.add(data);
-            return response_group;
-        }
-        catch (IOException | InterruptedException | IndexOutOfBoundsException e) {
-            return new ArrayList<>();
-        }
-    }
-
     public List<DataOutput> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException {
         try {
             return filterByDateRange(country, startDate, endDate);
