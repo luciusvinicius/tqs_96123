@@ -59,7 +59,7 @@ class API1Test {
     @Test
     void getAllCountries() throws IOException, InterruptedException, ParseException {
         
-        when(client.doRequest(COUNTRIES_URL, cache, api.getHost(), api.getKey()))
+        when(client.doRequest(COUNTRIES_URL, cache, api.getHeaderHost(), api.getHeaderKey()))
         .thenReturn(jsonMeth.generateJSONObject(ALL_COUNTRIES));
 
         JSONObject response = api.getAllCountries();
@@ -71,7 +71,7 @@ class API1Test {
 
     @Test
     void getSpecificCountry() throws IOException, InterruptedException, ParseException {
-        when(client.doRequest(HISTORY_URL + "?country=brazil&day=" + LocalDate.now().toString(), cache, api.getHost(), api.getKey()))
+        when(client.doRequest(HISTORY_URL + "?country=brazil&day=" + LocalDate.now().toString(), cache, api.getHeaderHost(), api.getHeaderKey()))
         .thenReturn(jsonMeth.generateJSONObject(SPECIFIC_COUNTRY));
 
         DataOutput data = api.getCountryByRegion("brazil").get(0);
@@ -83,10 +83,10 @@ class API1Test {
 
     @Test
     void getSpecificCountryWithDate() throws IOException, InterruptedException, ParseException {
-        when(client.doRequest(HISTORY_URL + "?country=brazil&day=2021-09-01", cache, api.getHost(), api.getKey()))
+        when(client.doRequest(HISTORY_URL + "?country=brazil&day=2021-09-01", cache, api.getHeaderHost(), api.getHeaderKey()))
         .thenReturn(jsonMeth.generateJSONObject(SPECIFIC_COUNTRY_WITH_START_DATE));
 
-        when(client.doRequest(HISTORY_URL + "?country=brazil&day=2021-09-02", cache, api.getHost(), api.getKey()))
+        when(client.doRequest(HISTORY_URL + "?country=brazil&day=2021-09-02", cache,api.getHeaderHost(), api.getHeaderKey()))
         .thenReturn(jsonMeth.generateJSONObject(SPECIFIC_COUNTRY_WITH_END_DATE));
 
         List<DataOutput> response = api.getCountryByRegionAndDate("brazil","2021-09-01","2021-09-02");
@@ -100,7 +100,7 @@ class API1Test {
 
     @Test
     void getSpecificCountryNotFound() throws IOException, InterruptedException, ParseException {
-        when(client.doRequest(HISTORY_URL + "?country=not_existent&day=" + LocalDate.now().toString(), cache, api.getHost(), api.getKey()))
+        when(client.doRequest(HISTORY_URL + "?country=not_existent&day=" + LocalDate.now().toString(), cache, api.getHeaderHost(), api.getHeaderKey()))
         .thenReturn(jsonMeth.generateJSONObject(NOT_FOUND));
 
         List<DataOutput> response = api.getCountryByRegion("not_existent");
