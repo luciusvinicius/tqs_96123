@@ -13,24 +13,28 @@ function App() {
 
   const [api, setApi] = useState("api1")
 
-  useEffect(() => console.log("new api", api), [api])
-
-
   return (
     <div className="App">
-      <FormControl>
-        <FormLabel id="demo-row-radio-buttons-group-label">Choose API</FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="demo-row-radio-buttons-group-label"
-          name="row-radio-buttons-group"
-          value={api}
-          onChange={(e) => setApi(e.target.value)}
-        >
-          <FormControlLabel value="api1" control={<Radio />} label="API 1" />
-          <FormControlLabel value="api2" control={<Radio />} label="API 2" />
-        </RadioGroup>
-      </FormControl>
+
+      <div className='centerContainer'>
+          <h1>Covid Data</h1>
+      </div>
+      <div className='centerContainer'>
+          <FormControl>
+            <FormLabel id="demo-row-radio-buttons-group-label">Choose API</FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              value={api}
+              onChange={(e) => setApi(e.target.value)}
+            >
+              <FormControlLabel value="api1" control={<Radio />} label="API 1" />
+              <FormControlLabel value="api2" control={<Radio />} label="API 2" />
+            </RadioGroup>
+          </FormControl>
+      </div>
+      
 
       <Inputs
         api={api}

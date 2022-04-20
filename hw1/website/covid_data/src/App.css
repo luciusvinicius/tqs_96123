@@ -17,3 +17,12 @@
   display: flex;
   justify-content: center;
 }
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root { /* Date Inputs */
+  margin-right: 1em !important;
+}
+
+
+.css-u4tvz2-MuiFormLabel-root { /* Radio Buttons text */
+  text-align: center;
+}

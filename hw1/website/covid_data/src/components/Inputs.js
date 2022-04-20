@@ -1,5 +1,5 @@
 import React from "react"
-import { Autocomplete, CircularProgress, TextField } from '@mui/material';
+import { Alert, Autocomplete, CircularProgress, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DataShown from './DataShown';
 
@@ -13,17 +13,16 @@ const Inputs = ({api}) => {
 
     const [countries, setCountries] = useState([])
     const [countryName, setCountryName] = useState("")
-    const [data, setData] = useState({})
+    const [data, setData] = useState([])
     const [isFullLoaded, setIsFullLoaded] = useState(false)
     const [startDateVal, setStartDateVal] = useState(new Date())
     const [endDateVal, setEndDateVal] = useState(new Date())
+    const [countriesIsLoading, setCountriesIsLoading] = useState(true)
 
   
-    const createRequest = (uri, setFunc, changeLoad=false) => {
+    const createApiRequest = (uri, setFunc) => {
 
-        if (changeLoad) {
-            setIsFullLoaded(false)
-        }
+        setIsFullLoaded(false)
 
         fetch(uri, {
             headers:{
@@ -36,7 +35,7 @@ const Inputs = ({api}) => {
         
         .then(response => response.json())
         .then(response => {
-            console.log("response", response)
+            // console.log("response", response)
             if (api == "api1") {
                 setFunc(response.response)
             }
@@ -44,9 +43,32 @@ const Inputs = ({api}) => {
                 setFunc(response.data.map(c => c.name))
             }
 
-            if (changeLoad) {
             setIsFullLoaded(true)
+        })
+        .catch(error => {
+            console.log("sussy error", error)
+        })
+    }
+
+    const createCountryRequest = (uri, setFunc) => {
+
+        fetch(uri, {
+            headers:{
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             }
+        })
+        
+        .then(response => {
+            // console.log("first response", response)
+            return response.json()
+        } )
+        .then(response => {
+            // console.log(`response for ${uri}`, response)
+            setFunc(response)
+            setCountriesIsLoading(false)
+
         })
         .catch(error => {
             console.log("sussy error", error)
@@ -54,14 +76,14 @@ const Inputs = ({api}) => {
     }
   
     useEffect(() => {
-      createRequest(`${BASE_URL}/${api}/countries`, setCountries, true)
+      createApiRequest(`${BASE_URL}/${api}/countries`, setCountries)
     }, [api])
   
     useEffect(() => {
       // console.log("date", dateVal.toISOString().substring(0, 10))
       if (countryName == "") return
-      setData({isLoading: true})
-      createRequest(`${BASE_URL}/${api}/countries/${countryName}?day=${startDateVal.toISOString().substring(0, 10)}`, setData)
+      setCountriesIsLoading(true)
+      createCountryRequest(`${BASE_URL}/${api}/countries/${countryName}?startDay=${startDateVal.toISOString().substring(0, 10)}&endDay=${endDateVal.toISOString().substring(0, 10)}`, setData)
   
     }, [countryName, startDateVal])
   
@@ -69,9 +91,6 @@ const Inputs = ({api}) => {
 
     return (
     <>
-        <div className='centerContainer'>
-            <h1>Covid Data</h1>
-        </div>
         {!isFullLoaded 
         ?
             <div className='centerContainer'>
@@ -88,19 +107,37 @@ const Inputs = ({api}) => {
 
                 <br />
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                    label="Date"
-                    inputFormat='dd/MM/yyyy'
-                    value={startDateVal}
-                    onChange={(newValue) => {
-                    setStartDateVal(newValue)
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                />
+                    <DatePicker
+                        label="Start Date"
+                        inputFormat='dd/MM/yyyy'
+                        value={startDateVal}
+                        onChange={(newValue) => {
+                        setStartDateVal(newValue)
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                        className="textInput"
+                    />
                 </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                        label="End Date"
+                        inputFormat='dd/MM/yyyy'
+                        value={endDateVal}
+                        onChange={(newValue) => {
+                        setEndDateVal(newValue)
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                                            
+                    />
+                </LocalizationProvider>
+                <br/>
+                <br/>
+
+                <Alert severity="warning">Doing a request for a good amount of days may take a while to have a response!</Alert>
+
                 
 
-                {/* {Object.keys(data).length !== 0 && <DataShown totalData={data}/>} */}
+                {data.length != 0 && <DataShown data={data} isLoading={countriesIsLoading}/>}
             </div>
         }
     </>
