@@ -22,9 +22,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CovidControllerIT {
+class CovidControllerIT {
     
     @LocalServerPort
     int randomServerPort;

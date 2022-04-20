@@ -21,8 +21,6 @@ public class DataOutput {
     public DataOutput(JSONObject json, boolean api1) {
 
         if (api1) {
-            // System.out.println("sussy json");
-            // System.out.println(json);
             JSONObject json2 = (JSONObject) ((JSONArray) json.get("response")).get(0);
             JSONObject cases = (JSONObject) json2.get("cases");
             country = json2.get("country").toString();
@@ -49,7 +47,6 @@ public class DataOutput {
             date = LocalDate.parse(json2.get("day").toString());
         }
         else {
-            // System.out.println(json);
             date = LocalDate.parse(json.get("date").toString());
             active = (Long) json.get("active");
             newActive = (Long) json.get("active_diff");

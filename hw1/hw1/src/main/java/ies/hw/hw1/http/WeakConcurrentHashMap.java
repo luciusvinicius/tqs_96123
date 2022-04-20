@@ -1,21 +1,24 @@
 package ies.hw.hw1.http;
 
-import java.text.SimpleDateFormat;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ies.hw.hw1.models.Cache;
 
-public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
 
     private static final long serialVersionUID = 1L;
 
-    private Map<K, Long> timeMap = new ConcurrentHashMap<>();
+    private transient Map<K, Long> timeMap = new ConcurrentHashMap<>();
     private long expiryInMillis = 1000000;
     private Cache cache = new Cache(0, 0, expiryInMillis);
-    private final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:SSS");
+
+    private static final Logger logger = LogManager.getLogger(WeakConcurrentHashMap.class);
 
     public WeakConcurrentHashMap() {
         initialize();
@@ -34,7 +37,8 @@ public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
     public V put(K key, V value) {
         Date date = new Date();
         timeMap.put(key, date.getTime());
-        System.out.println("Inserting : " + sdf.format(date) + " : " + key);
+        if (logger.isInfoEnabled())
+            logger.info(MessageFormat.format("Inserting : {0} : on Cache", key));
         return super.put(key, value);
     }
 
@@ -64,13 +68,15 @@ public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
     class CleanerThread extends Thread {
         @Override
         public void run() {
-            System.out.println("Initiating Cleaner Thread..");
+            if (logger.isInfoEnabled())
+                logger.info("Initiating Cleaner Thread...");
             while (true) {
                 cleanMap();
                 try {
                     Thread.sleep(expiryInMillis / 2);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    if (logger.isInfoEnabled())
+                        logger.error(e);
                 }
                 
             }
@@ -83,7 +89,8 @@ public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
                 if (currentTime > (entry.getValue() + expiryInMillis)) {
                     remove(key);
                     timeMap.remove(key);
-                    System.out.println("Removing : " + sdf.format(new Date()) + " : " + key);
+                    if (logger.isInfoEnabled())
+                        logger.info(MessageFormat.format("Removing : {0} : from Cache", key));
                 }
             }
         }
