@@ -21,22 +21,35 @@ public class DataOutput {
     public DataOutput(JSONObject json, boolean api1) {
 
         if (api1) {
+            // System.out.println("sussy json");
+            // System.out.println(json);
             JSONObject json2 = (JSONObject) ((JSONArray) json.get("response")).get(0);
             JSONObject cases = (JSONObject) json2.get("cases");
             country = json2.get("country").toString();
-            String newAct = cases.get("new").toString();
-            newActive = Long.parseLong(newAct.substring(1));
+            if (cases.get("new") != null) {
+                String newAct = cases.get("new").toString();
+                newActive = Long.parseLong(newAct.substring(1));
+            }
+            else {
+                newActive = 0L;
+            }
+            
             active = (Long) cases.get("active");
             recovered = (Long) cases.get("recovered");
 
             JSONObject deathsJson = (JSONObject) json2.get("deaths");
             deaths = (Long) deathsJson.get("total");
-            String newDeathsJson = deathsJson.get("new").toString();
-            newDeaths = Long.parseLong(newDeathsJson.substring(1));
+            if (deathsJson.get("new") != null) {
+                String newDeathsJson = deathsJson.get("new").toString();
+                newDeaths = Long.parseLong(newDeathsJson.substring(1));
+            }
+            else {
+                newDeaths = 0L;
+            }
             date = LocalDate.parse(json2.get("day").toString());
         }
         else {
-            System.out.println(json);
+            // System.out.println(json);
             date = LocalDate.parse(json.get("date").toString());
             active = (Long) json.get("active");
             newActive = (Long) json.get("active_diff");

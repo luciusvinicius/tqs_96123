@@ -17,7 +17,7 @@ import ies.hw.hw1.models.Cache;
 import static org.hamcrest.core.Is.is;
 import static org.awaitility.Awaitility.await;
 
-public class CacheTest {
+class CacheTest {
 
     private long ttl = 1000; // (1 second) ttl only for the caching cache
     private WeakConcurrentHashMap<String, ResponseEntity<String>> cache;

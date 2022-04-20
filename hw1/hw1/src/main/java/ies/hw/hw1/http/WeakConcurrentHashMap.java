@@ -9,12 +9,13 @@ import ies.hw.hw1.models.Cache;
 
 public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
 
+
     private static final long serialVersionUID = 1L;
 
-    private Map<K, Long> timeMap = new ConcurrentHashMap<K, Long>();
+    private Map<K, Long> timeMap = new ConcurrentHashMap<>();
     private long expiryInMillis = 1000000;
     private Cache cache = new Cache(0, 0, expiryInMillis);
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:SSS");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss:SSS");
 
     public WeakConcurrentHashMap() {
         initialize();
@@ -34,15 +35,7 @@ public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
         Date date = new Date();
         timeMap.put(key, date.getTime());
         System.out.println("Inserting : " + sdf.format(date) + " : " + key);
-        V returnVal = super.put(key, value);
-        return returnVal;
-    }
-
-    @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
-        for (K key : m.keySet()) {
-            put(key, m.get(key));
-        }
+        return super.put(key, value);
     }
 
     @Override
@@ -79,14 +72,16 @@ public class WeakConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                
             }
         }
 
         private void cleanMap() {
             long currentTime = new Date().getTime();
-            for (K key : timeMap.keySet()) {
-                if (currentTime > (timeMap.get(key) + expiryInMillis)) {
-                    V value = remove(key);
+            for (Map.Entry<K, Long> entry : timeMap.entrySet()) {
+                K key = entry.getKey();
+                if (currentTime > (entry.getValue() + expiryInMillis)) {
+                    remove(key);
                     timeMap.remove(key);
                     System.out.println("Removing : " + sdf.format(new Date()) + " : " + key);
                 }

@@ -1,6 +1,8 @@
 package ies.hw.hw1.models;
 
-public class Cache {
+import java.io.Serializable;
+
+public class Cache implements Serializable {
 
     private int numberOfHits;
     private int numberOfMisses;

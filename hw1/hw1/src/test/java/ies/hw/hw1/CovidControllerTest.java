@@ -20,10 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.CoreMatchers.is;
@@ -31,7 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.*;
 
 @WebMvcTest(CovidController.class)
-public class CovidControllerTest {
+class CovidControllerTest {
     
     @Autowired
     private MockMvc mvc;

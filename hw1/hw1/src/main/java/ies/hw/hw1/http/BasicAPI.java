@@ -12,8 +12,8 @@ import ies.hw.hw1.models.DataOutput;
 @Service
 public interface BasicAPI {
 
-    public Cache getCacheInfo();
-    public JSONObject getAllCountries() throws ParseException;
-    public List<DataOutput> getCountryByRegion(String country) throws ParseException;
-    public List<DataOutput> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException;
+    public Cache getCacheInfo() throws InterruptedException;
+    public JSONObject getAllCountries() throws ParseException, InterruptedException;
+    public List<DataOutput> getCountryByRegion(String country) throws ParseException, InterruptedException;
+    public List<DataOutput> getCountryByRegionAndDate(String country, String startDate, String endDate) throws ParseException, InterruptedException;
 }

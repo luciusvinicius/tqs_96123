@@ -1,55 +1,33 @@
 package ies.hw.hw1;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 
-import ies.hw.hw1.controller.CovidController;
 import ies.hw.hw1.http.API1;
-import ies.hw.hw1.http.API2;
 import ies.hw.hw1.http.Client;
 import ies.hw.hw1.http.WeakConcurrentHashMap;
-import ies.hw.hw1.models.Cache;
 import ies.hw.hw1.models.DataOutput;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import org.mockito.Mockito;
-
-import static org.hamcrest.Matchers.empty;
-
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class API1Test {
+class API1Test {
 
     @Mock
     Client client;
@@ -57,7 +35,6 @@ public class API1Test {
     private API1 api = new API1();
 
     private final String BASE_URL = "https://covid-193.p.rapidapi.com/";
-    private final String STATISTICS_URL = BASE_URL + "statistics";
     private final String HISTORY_URL = BASE_URL + "history";
     private final String COUNTRIES_URL = BASE_URL + "countries";
 

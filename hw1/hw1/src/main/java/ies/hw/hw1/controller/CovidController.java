@@ -27,7 +27,7 @@ public class CovidController {
     private API2 client2;
 
     @GetMapping("/api1/countries")
-    public JSONObject getAllCountries() throws ParseException {
+    public JSONObject getAllCountries() throws ParseException, InterruptedException {
         System.out.println("API 1 - Getting all countries");
         return client1.getAllCountries();
     }
@@ -36,7 +36,7 @@ public class CovidController {
     public List<DataOutput> getCountryByName(@PathVariable(value = "name") String name, 
     @RequestParam(required = false) String startDay,
     @RequestParam(required = false) String endDay
-    ) throws ParseException {
+    ) throws ParseException, InterruptedException {
 
         if (startDay != null && endDay != null) {
             System.out.println("API 1 - Getting Country for day: " + startDay + " until " + endDay);
@@ -55,7 +55,7 @@ public class CovidController {
     }
 
     @GetMapping("/api2/countries")
-    public JSONObject getAllCountries2() throws ParseException {
+    public JSONObject getAllCountries2() throws ParseException, InterruptedException {
         System.out.println("API 2 - Getting all countries");
         return client2.getAllCountries();
     }
@@ -63,7 +63,7 @@ public class CovidController {
     @GetMapping("/api2/countries/{name}")
     public List<DataOutput> getCountryByName2(@PathVariable(value = "name") String name, 
     @RequestParam(required = false) String startDay, 
-    @RequestParam(required = false) String endDay) throws ParseException {
+    @RequestParam(required = false) String endDay) throws ParseException, InterruptedException {
 
         if (startDay != null && endDay != null) {
             System.out.println("API 2 - Getting Country for day: " + startDay + " until " + endDay);
