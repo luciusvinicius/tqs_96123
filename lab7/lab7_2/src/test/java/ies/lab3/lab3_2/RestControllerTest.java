@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -46,10 +47,12 @@ public class RestControllerTest {
 
         when(service.getCarDetails(car.getCarId())).thenReturn(Optional.of(car));
 
-        mockMvc.perform(get("/car/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.maker", is("Sansung")))
-                .andExpect(jsonPath("$.model", is("XPTO")));
+        RestAssuredMockMvc.given().contentType("application/json")
+                .get("/car/1")
+                .then()
+                .statusCode(200).and()
+                .body("maker", equalTo("Sansung")).and()
+                .body("model", equalTo("XPTO"));
 
         verify(service, times(1)).getCarDetails(car.getCarId());
     }
@@ -62,15 +65,13 @@ public class RestControllerTest {
 
         when(service.getAllCars()).thenReturn(Arrays.asList(car, camaro, fusca));
 
-        mockMvc.perform(
-                        get("/cars")
-                )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].model", is("XPTO")))
-                .andExpect(jsonPath("$[1].model", is("Amarelo")))
-                .andExpect(jsonPath("$[2].model", is("Azul")));
-
+        RestAssuredMockMvc.given().contentType("application/json")
+                .get("/cars")
+                .then().statusCode(200).and()
+                .body("$", hasSize(3)).and()
+                .body("[0].model", is("XPTO")).and()
+                .body("[1].model", is("Amarelo")).and()
+                .body("[2].model", is("Azul"));
 
         verify(service, times(1)).getAllCars();
     }
@@ -82,12 +83,13 @@ public class RestControllerTest {
 
         when(service.save(Mockito.any())).thenReturn(car);
 
-        mockMvc.perform(
-                        post("/car").contentType(MediaType.APPLICATION_JSON).content(JsonUtils.toJson(car))
-                )
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.maker", is("Sansung")))
-                .andExpect(jsonPath("$.model", is("XPTO")));
+        RestAssuredMockMvc.given().contentType("application/json")
+                .body(JsonUtils.toJson(car))
+                .when()
+                .post("/car")
+                .then().statusCode(201).and()
+                .body("model", is("XPTO")).and()
+                .body("maker", is("Sansung"));
 
         verify(service, times(1)).save(Mockito.any());
     }
