@@ -42,7 +42,6 @@ class CovidControllerIT {
     void getAllCountriesForAPI2() throws Exception {
         ResponseEntity<JSONObject> response = restTemplate.exchange("/api2/countries", HttpMethod.GET, null, JSONObject.class);
         List<String> countries = (ArrayList<String>) response.getBody().get("data");
-        System.out.println(countries.size());
         assertThat(countries.size(), is(217));
     }
 

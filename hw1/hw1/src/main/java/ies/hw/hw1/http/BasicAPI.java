@@ -25,7 +25,7 @@ public abstract class BasicAPI {
 
     private Client client = new Client();
 
-    public BasicAPI(String listCountriesUrl, String countryStatsUrl, String headerHost, String headerKey) {
+    protected BasicAPI(String listCountriesUrl, String countryStatsUrl, String headerHost, String headerKey) {
         this.listCountriesUrl = listCountriesUrl;
         this.countryStatsUrl = countryStatsUrl;
         this.headerHost = headerHost;

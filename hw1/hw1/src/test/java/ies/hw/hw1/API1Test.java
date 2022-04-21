@@ -77,7 +77,6 @@ class API1Test {
         DataOutput data = api.getCountryByRegion("brazil").get(0);
        
         assertThat(data.getCountry(), is("Brazil"));
-        System.out.println(SPECIFIC_COUNTRY);
         assertThat(data.getDate(), is(LocalDate.now()));
     }
 

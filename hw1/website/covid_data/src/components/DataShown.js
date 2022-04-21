@@ -1,6 +1,5 @@
 import { Alert, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
-import { Col, Row } from "react-bootstrap";
 import CountryData from "./CountryData";
 
 const DataShown = ({data, isLoading}) => {
@@ -18,6 +17,10 @@ const DataShown = ({data, isLoading}) => {
                     </div>
                 </>
             : 
+            data.length == 0 
+            ?
+                <p>Nothing found with those parameters. Try to change them or try it later.</p>
+            :
                 <>
                     {data.map((country, idx) => <CountryData 
                         key={country.country + idx} 

@@ -56,7 +56,6 @@ const Inputs = ({api}) => {
     const createCountryRequest = (uri, setFunc) => {
         setCountriesIsLoading(true)
         setHasSelCountry(true)
-
         fetch(uri, {
             headers:{
                 Accept: 'application/json',
@@ -89,7 +88,7 @@ const Inputs = ({api}) => {
       if (countryName == "") return
       createCountryRequest(`${BASE_URL}/${api}/countries/${countryName}?startDay=${startDateVal.toISOString().substring(0, 10)}&endDay=${endDateVal.toISOString().substring(0, 10)}`, setData)
   
-    }, [countryName, startDateVal])
+    }, [countryName, startDateVal, endDateVal])
   
 
 

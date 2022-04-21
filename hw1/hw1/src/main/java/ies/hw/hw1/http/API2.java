@@ -3,7 +3,6 @@ package ies.hw.hw1.http;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -11,7 +10,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
-import ies.hw.hw1.models.Cache;
 import ies.hw.hw1.models.DataOutput;
 
 @Service

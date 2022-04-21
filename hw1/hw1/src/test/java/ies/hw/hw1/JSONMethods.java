@@ -11,12 +11,10 @@ import org.json.simple.parser.ParseException;
 public class JSONMethods {
 
     public JSONArray generateJSONArray(String s) throws ParseException {
-        // System.out.println("Sussy object: " + s);
         return (JSONArray) new JSONParser().parse(s);
     }
 
     public JSONObject generateJSONObject(String s) throws ParseException {
-        // System.out.println("Sussy object: " + s);
         return (JSONObject) new JSONParser().parse(s);
     }
 
