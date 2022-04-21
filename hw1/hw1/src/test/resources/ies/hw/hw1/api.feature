@@ -9,10 +9,9 @@ Feature: API
         Then new deaths on day <day> is <number_deaths>
         
         Examples:
-            | api       | country   | day | number_deaths |
-#            | "Api 1"   | "Brazil"  | 12  | 104           |
-            | "Api 1"   | "Brazil"  | 14  | 86            |
-#            | "Api 2"   | "Brazil"  | 12  | 165           |
-#            | "Api 2"   | "Brazil"  | 12  | 139           |
+            | api       | country       | day | number_deaths |
+            | "Api 1"   | "Brazil"      | 12  | 104           |
+            | "Api 1"   | "Argentina"   | 18  | 17            |
+            | "Api 2"   | "Brazil"      | 14  | 139           |
 
 
