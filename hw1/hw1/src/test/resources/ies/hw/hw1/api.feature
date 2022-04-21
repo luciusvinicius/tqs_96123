@@ -10,8 +10,8 @@ Feature: API
         
         Examples:
             | api       | country   | day | number_deaths |
-            | "Api 1"   | "Brazil"  | 12  | 104           |
-#            | "Api 1"   | "Brazil"  | 14  | 86            |
+#            | "Api 1"   | "Brazil"  | 12  | 104           |
+            | "Api 1"   | "Brazil"  | 14  | 86            |
 #            | "Api 2"   | "Brazil"  | 12  | 165           |
 #            | "Api 2"   | "Brazil"  | 12  | 139           |
 

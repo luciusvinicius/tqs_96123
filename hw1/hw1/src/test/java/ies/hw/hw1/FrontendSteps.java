@@ -9,6 +9,7 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,6 +25,7 @@ public class FrontendSteps {
     
     private WebDriver driver;
     private Map<String, Object> vars;
+    private String selectedApi = "";
 
     JavascriptExecutor js;
     @Given("the website just opened")
@@ -33,13 +35,24 @@ public class FrontendSteps {
         vars = new HashMap<String, Object>();
 
         driver.get("http://localhost:3000/");
-        driver.manage().window().setSize(new Dimension(640, 752));
+//        driver.manage().window().setSize(new Dimension(2048, 2048));
+//        js.executeScript("document.body.style.transform='scale(0.5)'");
     }
 
     @When("I choose for the {string} API")
     public void chooseApi(String api) {
+        selectedApi = api;
         if (api.equals("Api 1")) {
             assertTrue(driver.findElement(By.name("row-radio-buttons-group")).isSelected());
+        }
+        else if (api.equals("Api 2")) {
+            {
+                WebElement element = driver.findElement(By.cssSelector(".MuiFormControlLabel-root:nth-child(2) .PrivateSwitchBase-input"));
+                Actions builder = new Actions(driver);
+                builder.moveToElement(element).perform();
+            }
+            driver.findElement(By.cssSelector(".MuiFormControlLabel-root:nth-child(2) .PrivateSwitchBase-input")).click();
+            assertTrue(driver.findElement(By.cssSelector(".MuiFormControlLabel-root:nth-child(2) .PrivateSwitchBase-input")).isSelected());
         }
         System.out.println("You choosed api: " + api);
 
@@ -48,10 +61,11 @@ public class FrontendSteps {
     @And("I choose the country {string}")
     public void chooseCountry(String country) {
         System.out.println("Country: " + country);
-        driver.findElement(By.id(":r3:")).click();
-        driver.findElement(By.id(":r3:")).sendKeys(country);
-        driver.findElement(By.id(":r3:")).sendKeys(Keys.DOWN);
-        driver.findElement(By.id(":r3:")).sendKeys(Keys.ENTER);
+        String name_id = selectedApi.equals("Api 1") ? ":r3:" : ":rb:";
+        driver.findElement(By.id(name_id)).click();
+        driver.findElement(By.id(name_id)).sendKeys(country);
+        driver.findElement(By.id(name_id)).sendKeys(Keys.DOWN);
+        driver.findElement(By.id(name_id)).sendKeys(Keys.ENTER);
     }
 
     @And("I choose the date range between 12 and 18 of April")
@@ -66,10 +80,29 @@ public class FrontendSteps {
     @Then("new deaths on day {int} is {int}")
     public void assertDeaths(int day, int newDeaths) {
         int multiplier = day - 11;
-        System.out.println("Sussy Day: " + day);
-        System.out.println("NewDeaths: " + newDeaths);
-        assertThat(driver.findElement(By.cssSelector("h2:nth-child(" + (9 * multiplier - 1) + ")"))
+        int scrollDistance = 100;
+        String cssSelector = "h2:nth-child(" + (9 * multiplier - 1) + ")" ;
+
+        {
+            WebElement element = driver.findElement(By.cssSelector(cssSelector));
+            Actions builder = new Actions(driver);
+
+            // If out of range, scroll until it reaches it
+            while (true) {
+                try {
+                    builder.moveToElement(element).perform();
+                    break;
+                }
+                catch (MoveTargetOutOfBoundsException e) {
+                    js.executeScript("scroll(0," + scrollDistance + ")");
+                    scrollDistance *= 2;
+                }
+            }
+        }
+        assertThat(driver.findElement(By.cssSelector(cssSelector))
                 .getText(), is("Covid Data for 2022-04-"+day));
+
+
         driver.quit();
     }
 }
