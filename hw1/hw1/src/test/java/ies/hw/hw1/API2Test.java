@@ -107,4 +107,18 @@ class API2Test {
         assertTrue(response.isEmpty());
     }
 
+    @Test
+    void getSpecificCountryByFutureDate() throws IOException, ParseException, InterruptedException {
+        when(client.doRequest(REPORTS_URL + "?region_name=brazil&date=2040-09-30", cache, api.getHeaderHost(), api.getHeaderKey()))
+                .thenReturn(jsonMeth.generateJSONObject("{\"data\":[]}"));
+
+        when(client.doRequest(REPORTS_URL + "?region_name=brazil&date=2040-10-01", cache, api.getHeaderHost(), api.getHeaderKey()))
+                .thenReturn(jsonMeth.generateJSONObject("{\"data\":[]}"));
+
+        List<DataOutput> response = api.getCountryByRegionAndDate("brazil", "2040-09-30", "2040-10-01");
+
+        assertTrue(response.isEmpty());
+
+    }
+
 }

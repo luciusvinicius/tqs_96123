@@ -13,5 +13,3 @@ Feature: API
             | "Api 1"   | "Brazil"      | 12  | 104           |
             | "Api 1"   | "Argentina"   | 18  | 17            |
             | "Api 2"   | "Brazil"      | 14  | 139           |
-
-
