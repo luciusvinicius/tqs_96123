@@ -73,7 +73,8 @@ public class FrontendSteps {
 
     @Then("new deaths on day {int} is {int}")
     public void assertDeaths(int day, int newDeaths) {
-        int scrollDistance = 25;
+        int baseScrollDistance = 25;
+        int scrollDistance = baseScrollDistance;
         int h2Position = 9 * (day - 11) - 1;
         int newDeathsDistance = h2Position + 7;
         String cssSelector = "h2:nth-child(" + h2Position + ")" ;
@@ -92,7 +93,7 @@ public class FrontendSteps {
                 }
                 catch (MoveTargetOutOfBoundsException e) {
                     js.executeScript("scroll(0," + scrollDistance + ")");
-                    scrollDistance *= 2;
+                    scrollDistance += baseScrollDistance;
                 }
             }
         }
