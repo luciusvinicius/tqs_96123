@@ -32,26 +32,26 @@ class CovidControllerIT {
     private TestRestTemplate restTemplate;
 
     @Test
-    void getAllCountriesForAPI1() throws Exception {
+    void getAllCountriesForAPI1() {
         ResponseEntity<JSONObject> response = restTemplate.exchange("/api1/countries", HttpMethod.GET, null, JSONObject.class);
         List<String> countries = (ArrayList<String>) response.getBody().get("response");
         assertThat(countries.size(), is(233));
     }
 
     @Test
-    void getAllCountriesForAPI2() throws Exception {
+    void getAllCountriesForAPI2() {
         ResponseEntity<JSONObject> response = restTemplate.exchange("/api2/countries", HttpMethod.GET, null, JSONObject.class);
         List<String> countries = (ArrayList<String>) response.getBody().get("data");
         assertThat(countries.size(), is(217));
     }
 
     @Test
-    void getSpecificCountryForAPI1() throws Exception {
+    void getSpecificCountryForAPI1() {
         validateSpecificCountry("api1");
     }
 
     @Test
-    void getSpecificCountryForAPI2() throws Exception {
+    void getSpecificCountryForAPI2() {
         validateSpecificCountry("api2");
     }
 
@@ -66,13 +66,13 @@ class CovidControllerIT {
     }
 
     @Test
-    void getSpecificCountryAndDateRangeForAPI1() throws Exception {
+    void getSpecificCountryAndDateRangeForAPI1() {
         validateDateTest("api1");
         
     }
 
     @Test
-    void getSpecificCountryAndDateRangeForAPI2() throws Exception {
+    void getSpecificCountryAndDateRangeForAPI2() {
         validateDateTest("api2");
     }
 

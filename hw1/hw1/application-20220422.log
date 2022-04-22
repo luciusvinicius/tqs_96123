@@ -462,3 +462,66 @@
 2022-04-22 11:03:12.670 [Thread-17] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : teste insertion 1 : from Cache
 2022-04-22 11:03:12.670 [Thread-17] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : teste insertion 2 : from Cache
 2022-04-22 11:03:13.152 [Thread-15] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : teste stats : from Cache
+2022-04-22 11:03:35.036 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-14
+2022-04-22 11:03:35.037 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-15
+2022-04-22 11:03:35.038 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-16
+2022-04-22 11:03:35.038 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-17
+2022-04-22 11:03:35.039 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-18
+2022-04-22 11:03:35.040 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-19
+2022-04-22 11:03:35.041 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-20
+2022-04-22 11:03:35.042 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-21
+2022-04-22 11:03:35.044 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-22
+2022-04-22 11:03:36.008 [http-nio-8080-exec-1] INFO  ies.hw.hw1.controller.CovidController - API 2 - Getting Country Brazil for day: 2022-04-12 until 2022-04-18
+2022-04-22 11:03:36.008 [http-nio-8080-exec-1] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-12
+2022-04-22 11:03:36.009 [http-nio-8080-exec-1] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-13
+2022-04-22 11:03:36.010 [http-nio-8080-exec-1] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-14
+2022-04-22 11:03:36.010 [http-nio-8080-exec-1] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-15
+2022-04-22 11:03:36.011 [http-nio-8080-exec-1] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-16
+2022-04-22 11:03:36.014 [http-nio-8080-exec-1] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-17
+2022-04-22 11:03:36.015 [http-nio-8080-exec-1] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-18
+2022-04-22 11:10:39.946 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-20 : from Cache
+2022-04-22 11:10:39.946 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-20 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-21 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-22 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-12 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-13 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-14 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-15 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-16 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-17 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/regions : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-18 : from Cache
+2022-04-22 11:10:39.947 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-19-statistics.p.rapidapi.com/reports?region_name=Brazil&date=2022-04-19 : from Cache
+2022-04-22 11:10:39.947 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/countries : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-21 : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-22 : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-16 : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-16 : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-17 : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-15 : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-14 : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-14 : from Cache
+2022-04-22 11:10:39.948 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-15 : from Cache
+2022-04-22 11:10:39.949 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-13 : from Cache
+2022-04-22 11:10:39.949 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-12 : from Cache
+2022-04-22 11:10:39.949 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-18 : from Cache
+2022-04-22 11:10:39.949 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-19 : from Cache
+2022-04-22 11:10:39.949 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-19 : from Cache
+2022-04-22 11:10:39.949 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-18 : from Cache
+2022-04-22 11:10:39.950 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-17 : from Cache
+2022-04-22 11:10:39.950 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-12 : from Cache
+2022-04-22 11:10:39.950 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-13 : from Cache
+2022-04-22 11:10:39.950 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-22 : from Cache
+2022-04-22 11:10:39.950 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-21 : from Cache
+2022-04-22 11:10:39.950 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Argentina&day=2022-04-20 : from Cache
+2022-04-22 12:54:07.847 [http-nio-8080-exec-9] INFO  ies.hw.hw1.controller.CovidController - API 1 - Getting Country Brazil for day: 2022-04-22 until 2022-04-22
+2022-04-22 12:54:08.585 [http-nio-8080-exec-9] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Inserting : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-22 : on Cache
+2022-04-22 12:54:13.051 [http-nio-8080-exec-4] INFO  ies.hw.hw1.controller.CovidController - API 1 - Getting Country Brazil for day: 2022-04-21 until 2022-04-22
+2022-04-22 12:54:13.691 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Inserting : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-21 : on Cache
+2022-04-22 12:54:13.691 [http-nio-8080-exec-4] INFO  ies.hw.hw1.http.Client - Cache used for url: https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-22
+2022-04-22 13:15:39.953 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-21 : from Cache
+2022-04-22 13:15:39.954 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Removing : https://covid-193.p.rapidapi.com/history?country=Brazil&day=2022-04-22 : from Cache
+2022-04-22 14:47:43.836 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Initiating Cleaner Thread...
+2022-04-22 14:47:43.841 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Initiating Cleaner Thread...
+2022-04-22 14:51:57.375 [Thread-1] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Initiating Cleaner Thread...
+2022-04-22 14:51:57.376 [Thread-2] INFO  ies.hw.hw1.http.WeakConcurrentHashMap - Initiating Cleaner Thread...

@@ -3,6 +3,8 @@ package ies.hw.hw1.controller;
 import java.text.MessageFormat;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class CovidController {
     @Autowired
     private API2 client2;
 
+    @Operation(summary = "API 1 - Get all countries")
+    @ApiResponse(responseCode = "200", description = "Got all countries")
     @GetMapping("/api1/countries")
     public JSONObject getAllCountries() throws ParseException, InterruptedException {
         
@@ -40,6 +44,8 @@ public class CovidController {
         return client1.getAllCountries();
     }
 
+    @Operation(summary = "API 1 - Get specific country")
+    @ApiResponse(responseCode = "200", description = "Got specific country")
     @GetMapping("/api1/countries/{name}")
     public List<DataOutput> getCountryByName(@PathVariable(value = "name") String name, 
     @RequestParam(required = false) String startDay,
@@ -59,6 +65,8 @@ public class CovidController {
         return client1.getCountryByRegion(name);
     }
 
+    @Operation(summary = "API 1 - Get cache usage")
+    @ApiResponse(responseCode = "200", description = "Got cache usage")
     @GetMapping("/api1/cache/usage")
     public Cache getCache1() {
 
@@ -67,6 +75,8 @@ public class CovidController {
         return client1.getCacheInfo(); 
     }
 
+    @Operation(summary = "API 2 - Get all countries")
+    @ApiResponse(responseCode = "200", description = "Got all countries")
     @GetMapping("/api2/countries")
     public JSONObject getAllCountries2() throws ParseException, InterruptedException {
 
@@ -75,6 +85,8 @@ public class CovidController {
         return client2.getAllCountries();
     }
 
+    @Operation(summary = "API 2 - Get specific country")
+    @ApiResponse(responseCode = "200", description = "Got specific country")
     @GetMapping("/api2/countries/{name}")
     public List<DataOutput> getCountryByName2(@PathVariable(value = "name") String name, 
     @RequestParam(required = false) String startDay, 
@@ -91,6 +103,8 @@ public class CovidController {
         return client2.getCountryByRegion(name);
     }
 
+    @Operation(summary = "API 2 - Get cache usage")
+    @ApiResponse(responseCode = "200", description = "Got cache usage")
     @GetMapping("/api2/cache/usage")
     public Cache getCache2() {
 
