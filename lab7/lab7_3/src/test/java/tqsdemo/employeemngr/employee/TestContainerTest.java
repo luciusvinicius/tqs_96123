@@ -1,7 +1,6 @@
 package tqsdemo.employeemngr.employee;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -14,8 +13,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import tqsdemo.employeemngr.data.Employee;
 import tqsdemo.employeemngr.data.EmployeeRepository;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 @Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestContainerTest {
 
     // container
@@ -26,8 +30,8 @@ public class TestContainerTest {
             .withDatabaseName("books");
 
 
-    @LocalServerPort
-    int localPort;
+//    @LocalServerPort
+//    int localPort;
     Employee emp1, emp2;
 
     @Autowired
@@ -42,18 +46,33 @@ public class TestContainerTest {
 
     @BeforeEach
     void startEmployees() {
-        emp1 = repository.save(new Employee("Lucius", "lucius@ua.pt"));
-        emp2 = repository.save(new Employee("Vinicius", "viniciusf@ua.pt"));
+        emp1 = new Employee("Lucius", "lucius@ua.pt");
+        emp2 = new Employee("Vinicius", "viniciusf@ua.pt");
     }
 
     @Test
+    @Order(1)
     void whenGetEmployeeId_thenApiReturnsOneEmployee() {
-        String url = UriComponentsBuilder.newInstance()
-                .scheme("http")
-                .host("127.0.0.1")
-                .port(localPort)
-                .pathSegment("api","emplooye")
-                .toUriString();
+//        String url = UriComponentsBuilder.newInstance()
+//                .scheme("http")
+//                .host("127.0.0.1")
+//                .port(localPort)
+//                .pathSegment("api","emplooye")
+//                .toUriString();
+        System.out.println("Sussy order 1!");
+        repository.saveAndFlush(emp1);
+
+        Employee response = repository.findById(emp1.getId()).get();
+        assertEquals(response.getName(), emp1.getName());
+    }
+
+    @Test
+    @Order(2)
+    void getAllEmployees() {
+        System.out.println("Sussy order 2");
+        List<Employee> response = repository.findAll();
+        assertFalse(response.isEmpty());
+        assertEquals(response.size(), 1);
     }
 
 }
